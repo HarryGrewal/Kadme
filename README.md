@@ -1,4 +1,5 @@
 “The outline builder” 
+
 The goal of this exercise is to build the smallest possible polygon 
 (smallest area) that contains all the lines in an area.
 

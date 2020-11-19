@@ -2,7 +2,7 @@ package com.kadme.test;
 
 import java.util.Objects;
 
-public class Line implements Comparable<Line> {
+public class Line {
 
     private Point p1;
     private Point p2;
@@ -42,8 +42,4 @@ public class Line implements Comparable<Line> {
         return Objects.hash(getP1(), getP2());
     }
 
-    @Override
-    public int compareTo(Line line) {
-        return 0;
-    }
 }

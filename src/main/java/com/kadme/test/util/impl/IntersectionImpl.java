@@ -59,7 +59,7 @@ public class IntersectionImpl implements Intersection {
         double b1 = L1.getP1().getX() - L1.getP2().getX();
         double c1 = a1 * (L1.getP1().getX()) + b1 * (L1.getP1().getY());
 
-        // Line CD represented as a2x + b2y = c2
+        // Line L2 represented as a2x + b2y = c2
         double a2 = L2.getP2().getY() - L2.getP1().getY();
         double b2 = L2.getP1().getX() - L2.getP2().getX();
         double c2 = a2 * (L2.getP1().getX()) + b2 * (L2.getP1().getY());

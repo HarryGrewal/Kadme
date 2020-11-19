@@ -24,6 +24,13 @@ Subtracting these we get,
 (a1b2 – a2b1) x = c1b2 – c2b1
 This gives us the value of x. Similarly, we can find the value of y. (x, y) gives us the point of intersection.
 
+*Note: This gives the point of intersection of two lines,
+ but if we are given line segments instead of lines,
+ we have to also recheck that the point so computed actually lies on both the line segments.
+ If the line segment is specified by points (x1, y1) and (x2, y2),
+ then to check if (x, y) is on the segment we have to just check that
+ min (x1, x2) <= x <= max (x1, x2)
+ min (y1, y2) <= y <= max (y1, y2)
 ---------------------------------------------------------------------------------------------------
 determinant = a1 b2 - a2 b1
 if (determinant == 0)

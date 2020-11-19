@@ -1,6 +1,8 @@
 package com.kadme.test;
 
-public class Line {
+import java.util.Objects;
+
+public class Line implements Comparable<Line> {
 
     private Point p1;
     private Point p2;
@@ -24,5 +26,24 @@ public class Line {
                 "p1=" + p1 +
                 ", p2=" + p2 +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Line line = (Line) o;
+        return Objects.equals(getP1(), line.getP1()) &&
+                Objects.equals(getP2(), line.getP2());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getP1(), getP2());
+    }
+
+    @Override
+    public int compareTo(Line line) {
+        return 0;
     }
 }

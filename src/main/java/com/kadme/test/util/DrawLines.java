@@ -1,6 +1,6 @@
 package com.kadme.test.util;
 
-import com.kadme.test.Line;
+import com.kadme.test.model.Line;
 
 import javax.swing.*;
 import java.awt.*;

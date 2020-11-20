@@ -1,6 +1,6 @@
-package com.kadme.test.util;
+package com.kadme.test.service;
 
-import com.kadme.test.Line;
+import com.kadme.test.model.Line;
 
 import java.util.Map;
 import java.util.Set;

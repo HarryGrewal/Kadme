@@ -1,6 +1,6 @@
 package com.kadme.test.util;
 
-import com.kadme.test.Point;
+import com.kadme.test.model.Point;
 
 import java.util.ArrayList;
 import java.util.List;

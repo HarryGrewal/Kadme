@@ -1,4 +1,4 @@
-package com.kadme.test;
+package com.kadme.test.model;
 
 import java.util.List;
 

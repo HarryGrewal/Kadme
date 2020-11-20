@@ -1,4 +1,4 @@
-package com.kadme.test.util.impl;
+package com.kadme.test.service.impl;
 
 /*
 Input : A = (1, 1), B = (4, 4)
@@ -45,9 +45,9 @@ else
 ---------------------------------------------------------------------------------------------------
  */
 
-import com.kadme.test.Line;
-import com.kadme.test.Point;
-import com.kadme.test.util.Intersection;
+import com.kadme.test.model.Line;
+import com.kadme.test.model.Point;
+import com.kadme.test.service.Intersection;
 
 public class IntersectionImpl implements Intersection {
 

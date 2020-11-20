@@ -1,6 +1,6 @@
 package com.kadme.test.util;
 
-public final class MyConstants {
+public final class OutlineBuilderConstants {
 
     public static final double MIN_VALUE_FOR_POINT_GENERATION = 0.0;
     public static final double MAX_VALUE_FOR_POINT_GENERATION = 10.0;
@@ -8,7 +8,7 @@ public final class MyConstants {
     public static final int POINT_RANGE = 20;
 
 
-    private MyConstants() {
+    private OutlineBuilderConstants() {
         throw new AssertionError();
     }
 }

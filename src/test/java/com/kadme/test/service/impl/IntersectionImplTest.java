@@ -1,8 +1,8 @@
-package com.kadme.test.util.impl;
+package com.kadme.test.service.impl;
 
-import com.kadme.test.Line;
-import com.kadme.test.Point;
-import com.kadme.test.util.Intersection;
+import com.kadme.test.model.Line;
+import com.kadme.test.model.Point;
+import com.kadme.test.service.Intersection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,7 @@
-package com.kadme.test;
+package com.kadme.test.service;
+
+import com.kadme.test.model.Line;
+import com.kadme.test.model.Polygon;
 
 import java.util.Set;
 

@@ -1,7 +1,7 @@
-package com.kadme.test.util.impl;
+package com.kadme.test.service.impl;
 
-import com.kadme.test.Line;
-import com.kadme.test.util.FindGroups;
+import com.kadme.test.model.Line;
+import com.kadme.test.service.FindGroups;
 
 import java.util.Map;
 import java.util.Set;

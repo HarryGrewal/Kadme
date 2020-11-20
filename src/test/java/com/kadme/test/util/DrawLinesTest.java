@@ -1,7 +1,7 @@
 package com.kadme.test.util;
 
-import com.kadme.test.Line;
-import com.kadme.test.Point;
+import com.kadme.test.model.Line;
+import com.kadme.test.model.Point;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -11,8 +11,8 @@ import java.util.Set;
 
 class DrawLinesTest {
 
-    LinesGenerator linesGenerator = new LinesGenerator();
-    DrawLines drawLines = new DrawLines();
+    private LinesGenerator linesGenerator = new LinesGenerator();
+    private DrawLines drawLines = new DrawLines();
 
     @Test
     void paint() throws InterruptedException {
@@ -31,6 +31,6 @@ class DrawLinesTest {
         frame.pack();
         frame.setSize(new Dimension(420, 440));
         frame.setVisible(true);
-        Thread.sleep(10000000);
+        //Thread.sleep(10000000);
     }
 }

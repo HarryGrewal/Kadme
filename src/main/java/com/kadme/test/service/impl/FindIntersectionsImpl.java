@@ -47,9 +47,9 @@ else
 
 import com.kadme.test.model.Line;
 import com.kadme.test.model.Point;
-import com.kadme.test.service.Intersection;
+import com.kadme.test.service.FindIntersections;
 
-public class IntersectionImpl implements Intersection {
+public class FindIntersectionsImpl implements FindIntersections {
 
     @Override
     public Point findIntersectionPoint(Line L1, Line L2) {

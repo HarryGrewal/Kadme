@@ -2,11 +2,11 @@ package com.kadme.test.service.impl;
 
 import com.kadme.test.model.Line;
 import com.kadme.test.model.Point;
-import com.kadme.test.service.Intersection;
+import com.kadme.test.service.FindIntersections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class IntersectionImplTest {
+class FindIntersectionsImplTest {
 
     private static final Point A = new Point(1, 1);
     private static final Point B = new Point(4, 4);
@@ -23,10 +23,10 @@ class IntersectionImplTest {
     @Test
     void findIntersectionPoint() {
 
-        Intersection intersection = new IntersectionImpl();
+        FindIntersections findIntersections = new FindIntersectionsImpl();
 
-        Point p1 = intersection.findIntersectionPoint(new Line(A, B), new Line(C, D));
-        Point p2 = intersection.findIntersectionPoint(new Line(E, F), new Line(G, H));
+        Point p1 = findIntersections.findIntersectionPoint(new Line(A, B), new Line(C, D));
+        Point p2 = findIntersections.findIntersectionPoint(new Line(E, F), new Line(G, H));
 
         Assertions.assertEquals(new Point(2.4, 2.4), p1);
         Assertions.assertEquals(new Point(Double.MAX_VALUE, Double.MAX_VALUE), p2);

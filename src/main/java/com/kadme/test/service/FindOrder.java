@@ -6,5 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public interface FindOrder {
-    LinkedHashSet<Line> getLineOrderOfGroup(Set<Line> lines);
+    LinkedHashSet<Line> getLineOrderOfGroupInGroups(Set<Line> lines);
+
+    LinkedHashSet<Line> getLineOrderOfSingleGroup(Set<Line> lines);
 }

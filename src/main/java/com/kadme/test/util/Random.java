@@ -2,7 +2,7 @@ package com.kadme.test.util;
 
 public class Random {
 
-    public double randomCoordinate(double minPointRange, double maxPointRange) {
+    public static double randomCoordinate(double minPointRange, double maxPointRange) {
 
         // This will Create A Random Number in between  Min And Max.
         double x = (Math.random() * ((maxPointRange - minPointRange) + 1)) + minPointRange;

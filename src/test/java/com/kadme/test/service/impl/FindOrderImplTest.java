@@ -1,7 +1,6 @@
 package com.kadme.test.service.impl;
 
 import com.kadme.test.model.Line;
-import com.kadme.test.service.FindGroups;
 import com.kadme.test.util.LinesGenerator;
 import com.kadme.test.util.OutlineBuilderConstants;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-class FindGroupsImplTest {
+class FindOrderImplTest {
 
     private LinesGenerator linesGenerator = new LinesGenerator();
 
@@ -20,11 +19,10 @@ class FindGroupsImplTest {
     }
 
     @Test
-    void findGroups() {
-        //TODO
-        FindGroups findGroups = new FindGroupsImpl();
-
+    void getLineOrderOfGroupInGroups() {
     }
 
-
+    @Test
+    void getLineOrderOfSingleGroup() {
+    }
 }

@@ -10,15 +10,20 @@ import java.util.Map;
 import java.util.Set;
 
 public class FindGroupsImpl implements FindGroups {
-    FindOrder findOrder;
+    private FindOrder findOrder;
 
     @Override
     public Map<Integer, Set<Line>> findGroups(Set<Line> lines) {
         findOrder = new FindOrderImpl();
 
-        // TODO
+        // TODO find groups or single group
         Map<Integer, Set<Line>> groups = new HashMap<>();
-        Set<Line> OrderedLines = findOrder.getLineOrderOfGroup(lines);
+        // if more than 1 group
+        Set<Line> lineOrderOfGroupInGroups = findOrder.getLineOrderOfGroupInGroups(lines);
+
+        //if only one group
+        Set<Line> lineOrderOfSingleGroup = findOrder.getLineOrderOfSingleGroup(lines);
+
         groups.put(0, new LinkedHashSet<>());
         return groups;
     }

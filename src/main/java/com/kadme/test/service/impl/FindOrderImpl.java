@@ -8,8 +8,13 @@ import java.util.Set;
 
 public class FindOrderImpl implements FindOrder {
     @Override
-    public LinkedHashSet<Line> getLineOrderOfGroup(Set<Line> lines) {
+    public LinkedHashSet<Line> getLineOrderOfGroupInGroups(Set<Line> lines) {
         //todo
+        return null;
+    }
+
+    @Override
+    public LinkedHashSet<Line> getLineOrderOfSingleGroup(Set<Line> lines) {
         return null;
     }
 }

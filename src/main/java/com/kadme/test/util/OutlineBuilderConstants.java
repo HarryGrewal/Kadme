@@ -8,6 +8,7 @@ public final class OutlineBuilderConstants {
     public static final int POINT_RANGE = 100;
     public static final String POLYGON = "POLYGON";
     public static final String LINE = "LINE";
+    public static final String EXAMPLE_1 = "EXAMPLE_1";
 
     private OutlineBuilderConstants() {
         throw new AssertionError();

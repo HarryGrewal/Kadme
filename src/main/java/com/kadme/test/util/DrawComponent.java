@@ -25,6 +25,12 @@ public class DrawComponent extends JComponent {
         this.points = points;
     }
 
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawComponent(g);
+    }
+
     private void drawComponent(Graphics g) {
 
         Graphics2D g2d = (Graphics2D) g;
@@ -54,17 +60,6 @@ public class DrawComponent extends JComponent {
     }
 
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        drawComponent(g);
-    }
-
-    private void clearLines() {
-        lines.clear();
-        repaint();
-    }
-
     public void draw() {
         JFrame jFrame = new JFrame("Shortest Polygon Demo");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,15 +78,26 @@ public class DrawComponent extends JComponent {
         buttonsPanel.add(clearButton);
         jFrame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 
+        //Draw Example 1 button
+        drawEx1Button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //todo
+                componentType = EXAMPLE_1;
+                repaint();
+            }
+        });
+
         //Draw new Lines button
         drawLinesButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                componentType = LINE;
                 lines = new LinesGenerator().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
                         MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
-                componentType = LINE;
                 repaint();
             }
         });
@@ -106,22 +112,12 @@ public class DrawComponent extends JComponent {
             }
         });
 
-        //Draw Example 1 button
-        drawEx1Button.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //todo
-                repaint();
-            }
-        });
-
         //Clear Button
         clearButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                clearLines();
+                clear();
             }
         });
 
@@ -129,6 +125,11 @@ public class DrawComponent extends JComponent {
         jFrame.setVisible(true);
     }
 
+    private void clear() {
+        lines.clear();
+        points.clear();
+        repaint();
+    }
 
 }
 

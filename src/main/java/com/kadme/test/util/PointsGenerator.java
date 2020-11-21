@@ -5,7 +5,7 @@ import com.kadme.test.model.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kadme.test.util.Random.randomCoordinate;
+import static com.kadme.test.util.RandomCoordinate.randomCoordinate;
 
 public class PointsGenerator {
 

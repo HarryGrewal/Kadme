@@ -1,6 +1,6 @@
 package com.kadme.test.util;
 
-public class Random {
+public class RandomCoordinate {
 
     public static double randomCoordinate(double minPointRange, double maxPointRange) {
 

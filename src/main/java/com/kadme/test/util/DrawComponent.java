@@ -73,9 +73,11 @@ public class DrawComponent extends JComponent {
         jFrame.getContentPane().add(this, BorderLayout.CENTER);
 
         JPanel buttonsPanel = new JPanel();
-        JButton drawLinesButton = new JButton("Draw Lines");
+        JButton drawEx1Button = new JButton("Example 1");
+        JButton drawLinesButton = new JButton("Random Lines");
         JButton drawPolygonButton = new JButton("Draw Polygon");
         JButton clearButton = new JButton("Clear");
+        buttonsPanel.add(drawEx1Button);
         buttonsPanel.add(drawLinesButton);
         buttonsPanel.add(drawPolygonButton);
         buttonsPanel.add(clearButton);
@@ -100,6 +102,16 @@ public class DrawComponent extends JComponent {
             @Override
             public void actionPerformed(ActionEvent e) {
                 componentType = POLYGON;
+                repaint();
+            }
+        });
+
+        //Draw Example 1 button
+        drawEx1Button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //todo
                 repaint();
             }
         });

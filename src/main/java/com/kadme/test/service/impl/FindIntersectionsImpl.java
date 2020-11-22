@@ -1,50 +1,5 @@
 package com.kadme.test.service.impl;
 
-/*
-Input : A = (1, 1), B = (4, 4)
-        C = (1, 8), D = (2, 4)
-Output : The intersection of the given lines
-         AB and CD is: (2.4, 2.4)
-
-Input : A = (0, 1), B = (0, 4)
-        C = (1, 8), D = (1, 4)
-Output : Lines are parallel
-
-First of all, let us assume that we have two points (x1, y1) and (x2, y2).
-Now, we find the equation of line formed by these points.
-Let the given lines be :
-a1x + b1y = c1
-a2x + b2y = c2
-We have to now solve these 2 equations to find the point of intersection.
-To solve, we multiply 1. by b2 and 2 by b1
-This gives us,
-a1b2x + b1b2y = c1b2
-a2b1x + b2b1y = c2b1
-Subtracting these we get,
-(a1b2 – a2b1) x = c1b2 – c2b1
-This gives us the value of x. Similarly, we can find the value of y. (x, y) gives us the point of intersection.
-
-*Note: This gives the point of intersection of two lines,
- but if we are given line segments instead of lines,
- we have to also recheck that the point so computed actually lies on both the line segments.
- If the line segment is specified by points (x1, y1) and (x2, y2),
- then to check if (x, y) is on the segment we have to just check that
- min (x1, x2) <= x <= max (x1, x2)
- min (y1, y2) <= y <= max (y1, y2)
----------------------------------------------------------------------------------------------------
-determinant = a1 b2 - a2 b1
-if (determinant == 0)
-{
-    // Lines are parallel
-}
-else
-{
-    x = (c1b2 - c2b1)/determinant
-    y = (a1c2 - a2c1)/determinant
-}
----------------------------------------------------------------------------------------------------
- */
-
 import com.kadme.test.model.Line;
 import com.kadme.test.model.Point;
 import com.kadme.test.service.FindIntersections;
@@ -52,17 +7,17 @@ import com.kadme.test.service.FindIntersections;
 public class FindIntersectionsImpl implements FindIntersections {
 
     @Override
-    public Point findIntersectionPoint(Line L1, Line L2) {
+    public Point findIntersectionPoint(Line l1, Line l2) {
 
-        // Line L1 represented as a1x + b1y = c1
-        double a1 = L1.getP2().getY() - L1.getP1().getY();
-        double b1 = L1.getP1().getX() - L1.getP2().getX();
-        double c1 = a1 * (L1.getP1().getX()) + b1 * (L1.getP1().getY());
+        // Line l1 represented as a1x + b1y = c1
+        double a1 = l1.getP2().getY() - l1.getP1().getY();
+        double b1 = l1.getP1().getX() - l1.getP2().getX();
+        double c1 = a1 * (l1.getP1().getX()) + b1 * (l1.getP1().getY());
 
-        // Line L2 represented as a2x + b2y = c2
-        double a2 = L2.getP2().getY() - L2.getP1().getY();
-        double b2 = L2.getP1().getX() - L2.getP2().getX();
-        double c2 = a2 * (L2.getP1().getX()) + b2 * (L2.getP1().getY());
+        // Line l2 represented as a2x + b2y = c2
+        double a2 = l2.getP2().getY() - l2.getP1().getY();
+        double b2 = l2.getP1().getX() - l2.getP2().getX();
+        double c2 = a2 * (l2.getP1().getX()) + b2 * (l2.getP1().getY());
 
         double determinant = a1 * b2 - a2 * b1;
 
@@ -73,7 +28,16 @@ public class FindIntersectionsImpl implements FindIntersections {
         } else {
             double x = (b2 * c1 - b1 * c2) / determinant;
             double y = (a1 * c2 - a2 * c1) / determinant;
-            return new Point(x, y);
+
+            double minX = Double.min(l1.getP1().getX(), l1.getP2().getX());
+            double maxX = Double.max(l1.getP1().getX(), l1.getP2().getX());
+            double minY = Double.min(l1.getP1().getY(), l1.getP2().getY());
+            double maxY = Double.max(l1.getP1().getY(), l1.getP2().getY());
+
+            // To check if (x, y) is on the segment
+            return ((minX <= x && maxX >= x) && (minY <= y && maxY >= y)) ?
+                    new Point(x, y) : new Point(Double.MAX_VALUE, Double.MAX_VALUE);
+
         }
     }
 }

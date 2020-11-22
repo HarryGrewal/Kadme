@@ -13,12 +13,9 @@ public class OutlineBuilderApplication {
 
         OutlineBuilder outlineBuilder = new OutlineBuilderImpl();
 
-        // Input  Set<Lines>
-
         Polygon polygon = outlineBuilder.buildOutline(new LinesGenerator().
                 generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
                         MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE));
-
     }
 
 }

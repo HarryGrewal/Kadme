@@ -38,6 +38,10 @@ public class DrawComponent extends JComponent {
         g2d.setStroke(new BasicStroke(3f));
         g2d.setColor(Color.BLACK);
 
+        if (componentType == EXAMPLE_1) {
+            // line = load example data
+        }
+
         for (Line line : lines) {
             g2d.draw(new Line2D.Double(line.getP1().getX(), line.getP1().getY(),
                     line.getP2().getX(), line.getP2().getY()));
@@ -83,7 +87,7 @@ public class DrawComponent extends JComponent {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //todo
+
                 componentType = EXAMPLE_1;
                 repaint();
             }

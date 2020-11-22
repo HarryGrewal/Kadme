@@ -19,6 +19,9 @@ public class DrawComponent extends JComponent {
     private List<Point> points;
     private String componentType;
 
+    public DrawComponent(Set<Line> lines) {
+        this.lines = lines;
+    }
 
     public DrawComponent(Set<Line> lines, List<Point> points) {
         this.lines = lines;
@@ -100,8 +103,8 @@ public class DrawComponent extends JComponent {
             public void actionPerformed(ActionEvent e) {
 
                 componentType = LINE;
-                lines = new LinesGenerator().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
-                        MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
+//                lines = new LinesGenerator().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
+//                        MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
                 repaint();
             }
         });

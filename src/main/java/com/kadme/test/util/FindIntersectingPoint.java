@@ -1,12 +1,26 @@
-package com.kadme.test.service.impl;
+package com.kadme.test.util;
 
 import com.kadme.test.model.Line;
 import com.kadme.test.model.Point;
-import com.kadme.test.service.FindIntersections;
 
-public class FindIntersectionsImpl implements FindIntersections {
+/*
+* Given two points (x1, y1) and (x2, y2).
+The equation of line formed by these points.
+Let the given lines be :
+a1x + b1y = c1
+a2x + b2y = c2
+We have to now solve these 2 equations to find the point of intersection.
+To solve, we multiply 1. by b2 and 2 by b1
+This gives us,
+a1b2x + b1b2y = c1b2
+a2b1x + b2b1y = c2b1
+Subtracting these we get,
+(a1b2 – a2b1) x = c1b2 – c2b1
+This gives us the value of x. Similarly, we can find the value of y. (x, y) gives us the point of intersection.
+* */
 
-    @Override
+public class FindIntersectingPoint {
+
     public Point findIntersectionPoint(Line l1, Line l2) {
 
         // Line l1 represented as a1x + b1y = c1

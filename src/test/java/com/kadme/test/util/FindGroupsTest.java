@@ -8,11 +8,11 @@ import java.util.Set;
 
 class FindGroupsTest {
 
-    private LinesGenerator linesGenerator = new LinesGenerator();
+    private GenerateRandomLines generateRandomLines = new GenerateRandomLines();
 
     @BeforeEach
     void setUp() {
-        final Set<Line> lines = linesGenerator.generateRandomLines(OutlineBuilderConstants.MIN_VALUE_FOR_POINT_GENERATION,
+        final Set<Line> lines = generateRandomLines.generateRandomLines(OutlineBuilderConstants.MIN_VALUE_FOR_POINT_GENERATION,
                 OutlineBuilderConstants.MAX_VALUE_FOR_POINT_GENERATION, OutlineBuilderConstants.LINE_RANGE);
     }
 

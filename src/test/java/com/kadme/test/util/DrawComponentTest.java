@@ -14,9 +14,9 @@ class DrawComponentTest {
     @Test
     void draw() throws InterruptedException {
 
-        final Set<Line> randomLines = new LinesGenerator().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
+        final Set<Line> randomLines = new GenerateRandomLines().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
                 MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
-        final List<Point> randomPoints = new PointsGenerator().generateRandomPoints(OutlineBuilderConstants.MIN_VALUE_FOR_POINT_GENERATION,
+        final List<Point> randomPoints = new GenerateRandomPoints().generateRandomPoints(OutlineBuilderConstants.MIN_VALUE_FOR_POINT_GENERATION,
                 OutlineBuilderConstants.MAX_VALUE_FOR_POINT_GENERATION, OutlineBuilderConstants.POINT_RANGE);
         DrawComponent drawComponent = new DrawComponent(randomLines, randomPoints);
         drawComponent.draw();

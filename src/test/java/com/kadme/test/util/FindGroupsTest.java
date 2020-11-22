@@ -1,14 +1,12 @@
-package com.kadme.test.service.impl;
+package com.kadme.test.util;
 
 import com.kadme.test.model.Line;
-import com.kadme.test.util.LinesGenerator;
-import com.kadme.test.util.OutlineBuilderConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-class FindOrderImplTest {
+class FindGroupsTest {
 
     private LinesGenerator linesGenerator = new LinesGenerator();
 
@@ -19,12 +17,11 @@ class FindOrderImplTest {
     }
 
     @Test
-    void getLineOrderOfGroupInGroups() {
+    void findGroups() {
         //TODO
+        FindGroups findGroups = new FindGroups();
+
     }
 
-    @Test
-    void getLineOrderOfSingleGroup() {
-        //TODO
-    }
+
 }

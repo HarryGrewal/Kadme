@@ -48,8 +48,7 @@ public class CheckIfIntersect {
     private int checkOrientation(Point p, Point q, Point r) {
 
         {
-            // See https://www.geeksforgeeks.org/orientation-3-ordered-points/
-            // for details of below formula.
+            // referenced https://www.geeksforgeeks.org/orientation-3-ordered-points/ for below formula.
             double val = (q.getY() - p.getY()) * (r.getX() - q.getX()) - (q.getX() - p.getX()) * (r.getY() - q.getY());
 
             if (val == 0) return 0; // collinear

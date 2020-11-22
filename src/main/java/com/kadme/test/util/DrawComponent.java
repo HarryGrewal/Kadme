@@ -103,8 +103,8 @@ public class DrawComponent extends JComponent {
             public void actionPerformed(ActionEvent e) {
 
                 componentType = LINE;
-//                lines = new LinesGenerator().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
-//                        MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
+                lines = new LinesGenerator().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
+                        MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
                 repaint();
             }
         });

@@ -7,11 +7,9 @@ import java.util.Set;
 
 class LinesGeneratorTest {
 
-    private LinesGenerator linesGenerator = new LinesGenerator();
-
     @Test
     void generateRandomLines() {
-        final Set<Line> lines = linesGenerator.generateRandomLines(OutlineBuilderConstants.MIN_VALUE_FOR_POINT_GENERATION,
+        final Set<Line> lines = new LinesGenerator().generateRandomLines(OutlineBuilderConstants.MIN_VALUE_FOR_POINT_GENERATION,
                 OutlineBuilderConstants.MAX_VALUE_FOR_POINT_GENERATION, OutlineBuilderConstants.LINE_RANGE);
         System.out.println(lines);
     }

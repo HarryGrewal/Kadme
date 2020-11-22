@@ -9,12 +9,13 @@ import java.util.Set;
 public class FindOrderImpl implements FindOrder {
     @Override
     public LinkedHashSet<Line> getLineOrderOfGroupInGroups(Set<Line> lines) {
-        //todo
+        //TODO
         return null;
     }
 
     @Override
     public LinkedHashSet<Line> getLineOrderOfSingleGroup(Set<Line> lines) {
+        //TODO
         return null;
     }
 }

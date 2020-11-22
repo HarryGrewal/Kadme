@@ -10,7 +10,6 @@ import static com.kadme.test.util.GenerateRandomCoordinate.randomCoordinate;
 public class GenerateRandomPoints {
 
 
-
     public Point generateRandomPoint(double minPointRange, double maxPointRange) {
         double x = randomCoordinate(minPointRange, maxPointRange);
         double y = randomCoordinate(minPointRange, maxPointRange);

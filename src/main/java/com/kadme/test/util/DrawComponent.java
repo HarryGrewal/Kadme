@@ -115,6 +115,8 @@ public class DrawComponent extends JComponent {
             @Override
             public void actionPerformed(ActionEvent e) {
                 componentType = POLYGON;
+                points = new GenerateRandomPoints().generateRandomPoints(MIN_VALUE_FOR_POINT_GENERATION,
+                        MAX_VALUE_FOR_POINT_GENERATION, POINT_RANGE);
                 repaint();
             }
         });

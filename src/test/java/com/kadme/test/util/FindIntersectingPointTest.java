@@ -18,7 +18,6 @@ class FindIntersectingPointTest {
     private static final Point H = new Point(1, 4);
 
 
-
     @Test
     void findIntersectionPoint() {
 

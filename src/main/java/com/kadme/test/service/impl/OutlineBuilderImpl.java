@@ -11,8 +11,8 @@ import java.util.*;
 
 public class OutlineBuilderImpl implements OutlineBuilder {
 
-    private CheckIfIntersect checkIfIntersect;
-    private FindIntersectingPoint findIntersectingPoint;
+    private CheckIfIntersect checkIfIntersect = new CheckIfIntersect();
+    private FindIntersectingPoint findIntersectingPoint = new FindIntersectingPoint();
 
     @Override
     public Polygon buildOutline(Set<Line> lines) {
@@ -24,9 +24,14 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         lines.forEach(baseLine -> categorizeIntersectingNonIntersectingLines
                 (baseLine, lines, nonIntersectingLinesMap, intersectingLinesMap));
 
+        //Sanitize groups, remove empty sets
+        sanitizeGroupMap(nonIntersectingLinesMap);
+        sanitizeGroupMap(intersectingLinesMap);
+
         //Identify groups of non intersecting and intersecting lines
         Set<HashSet<Line>> nonIntersectingGroup = groupCategorizedLines(nonIntersectingLinesMap.entrySet());
         Set<HashSet<Line>> intersectingGroup = groupCategorizedLines(intersectingLinesMap.entrySet());
+
 
         System.out.println("\n line size \n" + lines.size());
         System.out.println("\n nonIntersectingGroup size \n" + nonIntersectingGroup.size());
@@ -66,21 +71,23 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         intersectingLineSet : l4 {l6, l7, l8, l9, l1, l2}
         ...
         * */
-        FindIntersectingPoint findIntersectingPoint = new FindIntersectingPoint();
         HashSet<Line> nonIntersectingLineSet = new HashSet<>();
         HashSet<Line> intersectingLineSet = new HashSet<>();
         lines.forEach(line -> {
             if (baseLine != line) {
-                if (findIntersectingPoint.doIntersect(baseLine, line)) {
+                if (checkIfIntersect.doIntersect(baseLine.getP1(), baseLine.getP2(),
+                        line.getP1(), line.getP2())) {
                     intersectingLineSet.add(line);
                 } else {
                     nonIntersectingLineSet.add(line);
                 }
             }
         });
+
         nonIntersectingLinesMap.put(baseLine, nonIntersectingLineSet);
         intersectingLinesMap.put(baseLine, intersectingLineSet);
     }
+
 
     private Set<HashSet<Line>> groupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) {
 
@@ -108,6 +115,12 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         return group;
     }
 
+    private void sanitizeGroupMap(Map<Line, HashSet<Line>> groupMap) {
+        Set<Map.Entry> toSanitize = new HashSet<>();
+        groupMap.entrySet().removeIf(entry ->
+                (entry.getValue().size() == 0 ||
+                        entry.getValue().equals(entry.getKey())));
+    }
 
     private Set<Line> validLineGroup(List<HashSet<Line>> group) {
         //remove all lines from nonIntersectingGroup having empty set
@@ -115,4 +128,5 @@ public class OutlineBuilderImpl implements OutlineBuilder {
 
         return null;
     }
+
 }

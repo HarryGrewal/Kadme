@@ -31,15 +31,14 @@ public class Line {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Line)) return false;
         Line line = (Line) o;
-        return Objects.equals(getP1(), line.getP1()) &&
-                Objects.equals(getP2(), line.getP2());
+        return getP1().equals(line.getP1()) &&
+                getP2().equals(line.getP2());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getP1(), getP2());
     }
-
 }

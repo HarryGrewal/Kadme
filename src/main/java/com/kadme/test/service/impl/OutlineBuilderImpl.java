@@ -25,9 +25,12 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                 (baseLine, lines, nonIntersectingLinesMap, intersectingLinesMap));
 
         //Identify groups of non intersecting and intersecting lines
-        List<HashSet<Line>> nonIntersectingGroup = groupCategorizedLines(nonIntersectingLinesMap.entrySet());
-        List<HashSet<Line>> intersectingGroup = groupCategorizedLines(intersectingLinesMap.entrySet());
+        Set<HashSet<Line>> nonIntersectingGroup = groupCategorizedLines(nonIntersectingLinesMap.entrySet());
+        Set<HashSet<Line>> intersectingGroup = groupCategorizedLines(intersectingLinesMap.entrySet());
 
+        System.out.println("\n line size \n" + lines.size());
+        System.out.println("\n nonIntersectingGroup size \n" + nonIntersectingGroup.size());
+        System.out.println("\n intersectingGroup size \n" + intersectingGroup.size());
 
         //Figure out from this group of non intersecting lines, closest lines between two group and
         // calculate their intersection point and figure out the order of the lines within the group
@@ -63,13 +66,12 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         intersectingLineSet : l4 {l6, l7, l8, l9, l1, l2}
         ...
         * */
-        checkIfIntersect = new CheckIfIntersect();
+        FindIntersectingPoint findIntersectingPoint = new FindIntersectingPoint();
         HashSet<Line> nonIntersectingLineSet = new HashSet<>();
         HashSet<Line> intersectingLineSet = new HashSet<>();
         lines.forEach(line -> {
             if (baseLine != line) {
-                if (checkIfIntersect.doIntersect(baseLine.getP1(), baseLine.getP2(),
-                        line.getP1(), line.getP2())) {
+                if (findIntersectingPoint.doIntersect(baseLine, line)) {
                     intersectingLineSet.add(line);
                 } else {
                     nonIntersectingLineSet.add(line);
@@ -80,7 +82,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         intersectingLinesMap.put(baseLine, intersectingLineSet);
     }
 
-    private List<HashSet<Line>> groupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) {
+    private Set<HashSet<Line>> groupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) {
 
         /*
          * Example 1, Trace group from non-intersecting LinesMap entrySet
@@ -96,7 +98,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
          * at list location 3 for l4 -> {l1, l2, l4, l6, l7, l8, l9}
          * ...
          * */
-        List<HashSet<Line>> group = new ArrayList<>();
+        Set<HashSet<Line>> group = new HashSet<>();
         entries.stream().forEach(entry -> {
             HashSet<Line> lineSet = new HashSet<>();
             lineSet.add(entry.getKey());

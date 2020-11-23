@@ -21,6 +21,14 @@ This gives us the value of x. Similarly, we can find the value of y. (x, y) give
 
 public class FindIntersectingPoint {
 
+    public boolean doIntersect(Line l1, Line l2) {
+        Point point = findIntersectionPoint(l1, l2);
+        if (point.getX() == Double.MAX_VALUE && point.getY() == Double.MAX_VALUE) {
+            return false;
+        }
+        return true;
+    }
+
     public Point findIntersectionPoint(Line l1, Line l2) {
 
         // Line l1 represented as a1x + b1y = c1

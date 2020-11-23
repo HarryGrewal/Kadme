@@ -2,6 +2,7 @@ package com.kadme.test.util;
 
 import com.kadme.test.model.Line;
 import com.kadme.test.model.Point;
+import com.kadme.test.service.impl.OutlineBuilderImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,10 +42,6 @@ public class DrawComponent extends JComponent {
         g2d.setStroke(new BasicStroke(3f));
         g2d.setColor(Color.BLACK);
 
-        if (componentType == EXAMPLE_1) {
-            // line = load example data
-        }
-
         for (Line line : lines) {
             g2d.draw(new Line2D.Double(line.getP1().getX(), line.getP1().getY(),
                     line.getP2().getX(), line.getP2().getY()));
@@ -52,15 +49,19 @@ public class DrawComponent extends JComponent {
 
         if (componentType == POLYGON) {
             float[] dashingPattern1 = {2f, 2f};
-            g2d.setStroke(new BasicStroke(2f, BasicStroke.CAP_BUTT,
+            g2d.setStroke(new BasicStroke(5f, BasicStroke.CAP_BUTT,
                     BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 2.0f));
-            g2d.setColor(Color.BLUE);
+            g2d.setColor(Color.RED);
 
-            for (int i = 0; i < points.size() - 1; i++) {
+            /*for (int i = 0; i < points.size() - 1; i++) {
                 Point p1 = points.get(i);
                 Point p2 = points.get(++i);
                 g2d.draw(new Line2D.Double(p1.getX(), p1.getY(),
                         p2.getX(), p2.getY()));
+            }*/
+            for (Line line : lines) {
+                g2d.draw(new Line2D.Double(line.getP1().getX(), line.getP1().getY(),
+                        line.getP2().getX(), line.getP2().getY()));
             }
         }
         repaint();
@@ -91,10 +92,8 @@ public class DrawComponent extends JComponent {
 
         //Draw Example 1 button
         drawEx1Button.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 componentType = EXAMPLE_1;
                 lines = EXAMPLE_1_SET;
                 repaint();
@@ -103,7 +102,6 @@ public class DrawComponent extends JComponent {
 
         //Draw Example 2 button
         drawEx2Button.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 componentType = EXAMPLE_2;
@@ -114,7 +112,6 @@ public class DrawComponent extends JComponent {
 
         //Draw Example 3 button
         drawEx3Button.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 componentType = EXAMPLE_3;
@@ -125,31 +122,31 @@ public class DrawComponent extends JComponent {
 
         //Draw new Lines button
         drawLinesButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 componentType = LINE;
                 lines = new GenerateRandomLines().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
                         MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
-                repaint();
+                jFrame.dispose();
+                jFrame.setVisible(false);
+                new OutlineBuilderImpl().buildOutline(lines);
             }
         });
 
         //Draw Polygon button
         drawPolygonButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 componentType = POLYGON;
                 points = new GenerateRandomPoints().generateRandomPoints(MIN_VALUE_FOR_POINT_GENERATION,
                         MAX_VALUE_FOR_POINT_GENERATION, POINT_RANGE);
+
                 repaint();
             }
         });
 
         //Clear Button
         clearButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 clear();
@@ -162,7 +159,7 @@ public class DrawComponent extends JComponent {
 
     private void clear() {
         lines.clear();
-        points.clear();
+//        points.clear();
         repaint();
     }
 

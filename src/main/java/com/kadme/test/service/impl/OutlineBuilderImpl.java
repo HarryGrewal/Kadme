@@ -7,7 +7,10 @@ import com.kadme.test.util.CheckIfIntersect;
 import com.kadme.test.util.DrawComponent;
 import com.kadme.test.util.FindIntersectingPoint;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class OutlineBuilderImpl implements OutlineBuilder {
 
@@ -33,9 +36,9 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         Set<HashSet<Line>> intersectingGroup = groupCategorizedLines(intersectingLinesMap.entrySet());
 
 
-        System.out.println("\n line size \n" + lines.size());
-        System.out.println(nonIntersectingGroup + "\n nonIntersectingGroup size \n" + nonIntersectingGroup.size());
-        System.out.println(intersectingGroup + "\n intersectingGroup size \n" + intersectingGroup.size());
+        System.out.println("Set<Line>  size is " + lines.size() + "\n");
+        System.out.println("\n nonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
+        System.out.println("\n intersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
 
         //Figure out from this group of non intersecting lines, closest lines between two group and
         // calculate their intersection point and figure out the order of the lines within the group
@@ -120,13 +123,6 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         groupMap.entrySet().removeIf(entry ->
                 (entry.getValue().isEmpty() ||
                         entry.getValue().equals(entry.getKey())));
-    }
-
-    private Set<Line> validLineGroup(List<HashSet<Line>> group) {
-        //remove all lines from nonIntersectingGroup having empty set
-        //remove lines from non-intersecting set which are not found in intersecting set
-
-        return null;
     }
 
 }

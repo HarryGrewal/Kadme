@@ -34,8 +34,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
 
 
         System.out.println("\n line size \n" + lines.size());
-        System.out.println("\n nonIntersectingGroup size \n" + nonIntersectingGroup.size());
-        System.out.println("\n intersectingGroup size \n" + intersectingGroup.size());
+        System.out.println(nonIntersectingGroup + "\n nonIntersectingGroup size \n" + nonIntersectingGroup.size());
+        System.out.println(intersectingGroup + "\n intersectingGroup size \n" + intersectingGroup.size());
 
         //Figure out from this group of non intersecting lines, closest lines between two group and
         // calculate their intersection point and figure out the order of the lines within the group
@@ -118,7 +118,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     private void sanitizeGroupMap(Map<Line, HashSet<Line>> groupMap) {
         Set<Map.Entry> toSanitize = new HashSet<>();
         groupMap.entrySet().removeIf(entry ->
-                (entry.getValue().size() == 0 ||
+                (entry.getValue().isEmpty() ||
                         entry.getValue().equals(entry.getKey())));
     }
 

@@ -71,7 +71,7 @@ public class DrawComponent extends JComponent {
         JFrame jFrame = new JFrame("Shortest Polygon Demo");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.setPreferredSize(new Dimension(550, 550));
+        this.setPreferredSize(new Dimension(650, 650));
         jFrame.getContentPane().add(this, BorderLayout.CENTER);
 
         JPanel buttonsPanel = new JPanel();

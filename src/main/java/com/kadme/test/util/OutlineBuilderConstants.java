@@ -27,6 +27,24 @@ public final class OutlineBuilderConstants {
         add(new Line(new Point(600, 50), new Point(150, 600)));
     }};
 
+    public static final Set<Line> EXAMPLE_3_SET = new HashSet<Line>() {{
+        add(new Line(new Point(100, 50), new Point(450, 500)));
+        add(new Line(new Point(150, 50), new Point(500, 500)));
+        add(new Line(new Point(200, 50), new Point(550, 500)));
+        add(new Line(new Point(500, 50), new Point(50, 500)));
+        add(new Line(new Point(550, 50), new Point(50, 550)));
+        add(new Line(new Point(600, 50), new Point(50, 600)));
+    }};
+
+    public static final Set<Line> EXAMPLE_2_SET = new HashSet<Line>() {{
+        add(new Line(new Point(175, 50), new Point(180, 450)));
+        add(new Line(new Point(180, 50), new Point(185, 450)));
+        add(new Line(new Point(185, 50), new Point(190, 450)));
+        add(new Line(new Point(190, 50), new Point(195, 450)));
+        add(new Line(new Point(195, 50), new Point(195, 450)));
+        add(new Line(new Point(200, 50), new Point(200, 450)));
+    }};
+
     private OutlineBuilderConstants() {
         throw new AssertionError();
     }

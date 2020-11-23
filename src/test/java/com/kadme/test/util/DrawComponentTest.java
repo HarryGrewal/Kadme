@@ -19,20 +19,16 @@ class DrawComponentTest {
 
 
         final Set<Line> lines = new HashSet<>();
-        Line l1 = new Line(new Point(100, 50), new Point(350, 450));
-        Line l2 = new Line(new Point(150, 50), new Point(400, 450));
-        Line l3 = new Line(new Point(200, 50), new Point(450, 450));
-        Line l4 = new Line(new Point(50, 250), new Point(550, 275));
-        Line l5 = new Line(new Point(50, 300), new Point(600, 325));
-        Line l6 = new Line(new Point(500, 50), new Point(50, 500));
-        Line l7 = new Line(new Point(550, 50), new Point(100, 550));
-        Line l8 = new Line(new Point(600, 50), new Point(150, 600));
+        Line l1 = new Line(new Point(175, 50), new Point(180, 450));
+        Line l2 = new Line(new Point(180, 50), new Point(185, 450));
+        Line l3 = new Line(new Point(185, 50), new Point(190, 450));
+        Line l6 = new Line(new Point(190, 50), new Point(195, 450));
+        Line l7 = new Line(new Point(195, 50), new Point(195, 450));
+        Line l8 = new Line(new Point(200, 50), new Point(200, 450));
 
         lines.add(l1);
-        lines.add(l2);
         lines.add(l3);
-        lines.add(l4);
-        lines.add(l5);
+        lines.add(l2);
         lines.add(l6);
         lines.add(l7);
         lines.add(l8);

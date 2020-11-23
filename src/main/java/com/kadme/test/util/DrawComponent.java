@@ -65,6 +65,18 @@ public class DrawComponent extends JComponent {
                         line.getP2().getX(), line.getP2().getY()));
             }
         }
+
+        if (componentType == WEAR_MASK) {
+            g2d.setColor(Color.RED);
+            g2d.fillOval(100, 100, 300, 300);
+            g2d.setColor(Color.BLACK);
+            g2d.fillOval(110, 130, 60, 60);
+            g2d.fillOval(170, 130, 60, 60);
+            g2d.fillOval(100, 210, 220, 120);
+            g2d.setColor(Color.WHITE);
+            g2d.fillRect(100, 210, 220, 60);
+            g2d.fillOval(100, 220, 220, 80);
+        }
         repaint();
     }
 
@@ -82,12 +94,14 @@ public class DrawComponent extends JComponent {
         JButton drawEx3Button = new JButton("Example 3");
         JButton drawLinesButton = new JButton("Random Lines");
         JButton drawPolygonButton = new JButton("Draw Polygon");
+        JButton wearMaskButton = new JButton("Wear Mask");
         JButton clearButton = new JButton("Clear");
         buttonsPanel.add(drawEx1Button);
         buttonsPanel.add(drawEx2Button);
         buttonsPanel.add(drawEx3Button);
         buttonsPanel.add(drawLinesButton);
         buttonsPanel.add(drawPolygonButton);
+        buttonsPanel.add(wearMaskButton);
         buttonsPanel.add(clearButton);
         jFrame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 
@@ -139,9 +153,15 @@ public class DrawComponent extends JComponent {
             @Override
             public void actionPerformed(ActionEvent e) {
                 componentType = POLYGON;
-                points = new GenerateRandomPoints().generateRandomPoints(MIN_VALUE_FOR_POINT_GENERATION,
-                        MAX_VALUE_FOR_POINT_GENERATION, POINT_RANGE);
+                repaint();
+            }
+        });
 
+        //Draw Real Polygon :) button
+        wearMaskButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                componentType = WEAR_MASK;
                 repaint();
             }
         });

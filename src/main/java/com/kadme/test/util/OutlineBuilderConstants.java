@@ -15,6 +15,7 @@ public final class OutlineBuilderConstants {
     public static final int LINE_RANGE = 10;
     public static final int POINT_RANGE = 20;
     public static final String POLYGON = "POLYGON";
+    public static final String WEAR_MASK = "WEAR_MASK";
     public static final String LINE = "LINE";
     public static final String EXAMPLE_1 = "EXAMPLE_1";
     public static final String EXAMPLE_2 = "EXAMPLE_2";

@@ -9,7 +9,7 @@ import com.kadme.test.util.DrawComponent;
 import java.util.*;
 
 public class OutlineBuilderImpl implements OutlineBuilder {
-    CheckIfIntersect checkIfIntersectClass;
+    private CheckIfIntersect checkIfIntersect;
 
     @Override
     public Polygon buildOutline(Set<Line> lines) {
@@ -17,17 +17,17 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         Map<Line, HashSet<Line>> nonIntersectingLinesMap = new HashMap<>();
         Map<Line, HashSet<Line>> intersectingLinesMap = new HashMap<>();
 
-        //Create a map per line as key and set of non intersecting & intersecting lines as values
+        //Create two maps; line as key and set of non intersecting & intersecting lines as respective values
         lines.forEach(baseLine -> categorizeIntersectingNonIntersectingLines
                 (baseLine, lines, nonIntersectingLinesMap, intersectingLinesMap));
 
         //Identify groups of non intersecting line
-        List<HashSet<Line>> group = new ArrayList<>();
-        nonIntersectingLinesMap.entrySet().stream().forEach(e -> {
-            HashSet<Line> lineSet = new HashSet<Line>();
-            lineSet.add(e.getKey());
-            lineSet.addAll(e.getValue());
-            group.add(lineSet);
+        List<HashSet<Line>> nonIntersectingGroup = new ArrayList<>();
+        nonIntersectingLinesMap.entrySet().stream().forEach(entry -> {
+            HashSet<Line> lineSet = new HashSet<>();
+            lineSet.add(entry.getKey());
+            lineSet.addAll(entry.getValue());
+            nonIntersectingGroup.add(lineSet);
         });
 
         //Figure out from this group of non intersecting lines, closest lines between two group and
@@ -41,13 +41,15 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         return new Polygon(null);
     }
 
-    private void categorizeIntersectingNonIntersectingLines(Line baseLine, Set<Line> lines, Map<Line, HashSet<Line>> nonIntersectingLinesMap, Map<Line, HashSet<Line>> intersectingLinesMap) {
-        checkIfIntersectClass = new CheckIfIntersect();
+    private void categorizeIntersectingNonIntersectingLines(Line baseLine, Set<Line> lines,
+                                                            Map<Line, HashSet<Line>> nonIntersectingLinesMap,
+                                                            Map<Line, HashSet<Line>> intersectingLinesMap) {
+        checkIfIntersect = new CheckIfIntersect();
         HashSet<Line> nonIntersectingLineSet = new HashSet<>();
         HashSet<Line> intersectingLineSet = new HashSet<>();
         lines.forEach(line -> {
             if (baseLine != line) {
-                if (checkIfIntersectClass.doIntersect(baseLine.getP1(), baseLine.getP2(),
+                if (checkIfIntersect.doIntersect(baseLine.getP1(), baseLine.getP2(),
                         line.getP1(), line.getP2())) {
                     intersectingLineSet.add(line);
                 } else {

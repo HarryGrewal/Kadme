@@ -6,8 +6,6 @@ import com.kadme.test.service.impl.OutlineBuilderImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
 import java.util.List;
 import java.util.Set;
@@ -94,7 +92,7 @@ public class DrawComponent extends JComponent {
         JButton drawEx3Button = new JButton("Example 3");
         JButton drawLinesButton = new JButton("Random Lines");
         JButton drawPolygonButton = new JButton("Draw Polygon");
-        JButton wearMaskButton = new JButton("Wear Mask");
+        JButton wearMaskButton = new JButton("Stay Safe");
         JButton clearButton = new JButton("Clear");
         buttonsPanel.add(drawEx1Button);
         buttonsPanel.add(drawEx2Button);
@@ -106,73 +104,50 @@ public class DrawComponent extends JComponent {
         jFrame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 
         //Draw Example 1 button
-        drawEx1Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                componentType = EXAMPLE_1;
-                lines = EXAMPLE_1_SET;
-                repaint();
-            }
+        drawEx1Button.addActionListener(e -> {
+            componentType = EXAMPLE_1;
+            lines = EXAMPLE_1_SET;
+            repaint();
         });
 
         //Draw Example 2 button
-        drawEx2Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                componentType = EXAMPLE_2;
-                lines = EXAMPLE_2_SET;
-                repaint();
-            }
+        drawEx2Button.addActionListener(e -> {
+            componentType = EXAMPLE_2;
+            lines = EXAMPLE_2_SET;
+            repaint();
         });
 
         //Draw Example 3 button
-        drawEx3Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                componentType = EXAMPLE_3;
-                lines = EXAMPLE_3_SET;
-                repaint();
-            }
+        drawEx3Button.addActionListener(e -> {
+            componentType = EXAMPLE_3;
+            lines = EXAMPLE_3_SET;
+            repaint();
         });
 
         //Draw new Lines button
-        drawLinesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                componentType = LINE;
-                lines = new GenerateRandomLines().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
-                        MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
-                jFrame.dispose();
-                jFrame.setVisible(false);
-                new OutlineBuilderImpl().buildOutline(lines);
-            }
+        drawLinesButton.addActionListener(e -> {
+            componentType = LINE;
+            lines = new GenerateRandomLines().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
+                    MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
+            jFrame.dispose();
+            jFrame.setVisible(false);
+            new OutlineBuilderImpl().buildOutline(lines);
         });
 
         //Draw Polygon button
-        drawPolygonButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                componentType = POLYGON;
-                repaint();
-            }
+        drawPolygonButton.addActionListener(e -> {
+            componentType = POLYGON;
+            repaint();
         });
 
         //Draw Real Polygon :) button
-        wearMaskButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                componentType = WEAR_MASK;
-                repaint();
-            }
+        wearMaskButton.addActionListener(e -> {
+            componentType = WEAR_MASK;
+            repaint();
         });
 
         //Clear Button
-        clearButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clear();
-            }
-        });
+        clearButton.addActionListener(e -> clear());
 
         jFrame.pack();
         jFrame.setVisible(true);

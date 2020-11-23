@@ -1,16 +1,17 @@
 package com.kadme.test.service.impl;
 
 import com.kadme.test.model.Line;
+import com.kadme.test.model.Point;
 import com.kadme.test.model.Polygon;
 import com.kadme.test.service.OutlineBuilder;
 import com.kadme.test.util.CheckIfIntersect;
 import com.kadme.test.util.DrawComponent;
 import com.kadme.test.util.FindIntersectingPoint;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Stream;
+
+import static com.kadme.test.util.ByAngleComparator.byAngleComparator;
 
 public class OutlineBuilderImpl implements OutlineBuilder {
 
@@ -32,25 +33,70 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         sanitizeGroupMap(intersectingLinesMap);
 
         //Identify groups of non intersecting and intersecting lines
-        Set<HashSet<Line>> nonIntersectingGroup = groupCategorizedLines(nonIntersectingLinesMap.entrySet());
-        Set<HashSet<Line>> intersectingGroup = groupCategorizedLines(intersectingLinesMap.entrySet());
+        Set<LinkedHashSet<Line>> nonIntersectingGroup = groupCategorizedLines(nonIntersectingLinesMap.entrySet());
+        Set<LinkedHashSet<Line>> intersectingGroup = groupCategorizedLines(intersectingLinesMap.entrySet());
+
+
+        //Figure out from this group of non intersecting lines, group boundaries and
+        // calculate their intersection point and figure out the order of the lines within the group.
+        //Once we get the intersection point simply travel via first group to intersection point and
+        // then to other points in the group and then to intersection point and to third group and so on
+        //By travel I meant include points in Polygon class
+        //Verify all the points are included in polygon
+
+        //Ready for Red-Black action!
+//        nonIntersectingGroup.forEach(this::sortLines);
+
+        Set<Point> finalListOfPoints = new LinkedHashSet<>();
+        List<Line> intersectionLine = new ArrayList<>();
+        nonIntersectingGroup.forEach(setOfLine -> {
+                    Stream<Line> sorted = new TreeSet<>(setOfLine).stream()
+                            .sorted(Collections.reverseOrder(byAngleComparator(centroid(setOfLine))));
+
+                    intersectionLine.add(sorted.parallel().findFirst().isPresent() ?
+                            sorted.parallel().findFirst().get() : null);
+                    intersectionLine.add(sorted.parallel().skip(setOfLine.size() - 1).findFirst().isPresent() ?
+                            sorted.parallel().skip(setOfLine.size() - 1).findFirst().get() : null);
+                }
+        );
+
+        nonIntersectingGroup.forEach(setOfLine -> {
+                    setOfLine.forEach(line -> finalListOfPoints.add(line.getP1()));
+                    int i = 0;
+                    finalListOfPoints.add(findIntersectingPoint
+                            .findIntersectionPoint(intersectionLine.get(++i),
+                                    intersectionLine.get(++i)));
+                }
+        );
+
+        //finalListOfPoints.add(e)
 
 
         System.out.println("Set<Line>  size is " + lines.size() + "\n");
         System.out.println("\n nonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
         System.out.println("\n intersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
-
-        //Figure out from this group of non intersecting lines, closest lines between two group and
-        // calculate their intersection point and figure out the order of the lines within the group
-        //once we get the intersection point simply travel via first group to intersection point and
-        // then to other points in the group and then to intersection point and to third group and so on
-        //By travel I meant include points in Polygon class
-        //Verify all the points are included in polygon
-
-
+        System.out.println("\n Intersecting lines size is  " + intersectionLine.size() + "\n" + intersectionLine);
+        System.out.println("\n Final list of points size is " + finalListOfPoints.size() + "\n" + finalListOfPoints);
         //Draw Component
         new DrawComponent(lines).draw();
         return new Polygon(null);
+    }
+
+/*    private void sortLines(Set<Line> setOfLine) {
+          List<Line> listOfLine = new ArrayList<>(setOfLine);
+        listOfLine.sort(Collections.reverseOrder(byAngleComparator(centroid(setOfLine))));
+    }*/
+
+    private Point centroid(Set<Line> setOfLine) {
+        double centroidX = 0, centroidY = 0;
+
+        for (Line knot : setOfLine) {
+            centroidX += knot.getP1().getX();
+            centroidX += knot.getP2().getX();
+            centroidY += knot.getP1().getY();
+            centroidY += knot.getP2().getY();
+        }
+        return new Point(centroidX / (setOfLine.size() * 2), centroidY / (setOfLine.size() * 2));
     }
 
     private void categorizeIntersectingNonIntersectingLines(Line baseLine, Set<Line> lines,
@@ -92,7 +138,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     }
 
 
-    private Set<HashSet<Line>> groupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) {
+    private Set<LinkedHashSet<Line>> groupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) {
 
         /*
          * Example 1, Trace group from non-intersecting LinesMap entrySet
@@ -108,9 +154,10 @@ public class OutlineBuilderImpl implements OutlineBuilder {
          * at list location 3 for l4 -> {l1, l2, l4, l6, l7, l8, l9}
          * ...
          * */
-        Set<HashSet<Line>> group = new HashSet<>();
-        entries.stream().forEach(entry -> {
-            HashSet<Line> lineSet = new HashSet<>();
+
+        Set<LinkedHashSet<Line>> group = new LinkedHashSet<>();
+        entries.forEach(entry -> {
+            LinkedHashSet<Line> lineSet = new LinkedHashSet<>();
             lineSet.add(entry.getKey());
             lineSet.addAll(entry.getValue());
             group.add(lineSet);
@@ -119,10 +166,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     }
 
     private void sanitizeGroupMap(Map<Line, HashSet<Line>> groupMap) {
-        Set<Map.Entry> toSanitize = new HashSet<>();
         groupMap.entrySet().removeIf(entry ->
-                (entry.getValue().isEmpty() ||
-                        entry.getValue().equals(entry.getKey())));
+                (entry.getValue().isEmpty()));
     }
 
 }

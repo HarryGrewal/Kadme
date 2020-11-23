@@ -5,11 +5,14 @@ import com.kadme.test.model.Polygon;
 import com.kadme.test.service.OutlineBuilder;
 import com.kadme.test.util.CheckIfIntersect;
 import com.kadme.test.util.DrawComponent;
+import com.kadme.test.util.FindIntersectingPoint;
 
 import java.util.*;
 
 public class OutlineBuilderImpl implements OutlineBuilder {
+
     private CheckIfIntersect checkIfIntersect;
+    private FindIntersectingPoint findIntersectingPoint;
 
     @Override
     public Polygon buildOutline(Set<Line> lines) {
@@ -21,14 +24,10 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         lines.forEach(baseLine -> categorizeIntersectingNonIntersectingLines
                 (baseLine, lines, nonIntersectingLinesMap, intersectingLinesMap));
 
-        //Identify groups of non intersecting line
-        List<HashSet<Line>> nonIntersectingGroup = new ArrayList<>();
-        nonIntersectingLinesMap.entrySet().stream().forEach(entry -> {
-            HashSet<Line> lineSet = new HashSet<>();
-            lineSet.add(entry.getKey());
-            lineSet.addAll(entry.getValue());
-            nonIntersectingGroup.add(lineSet);
-        });
+        //Identify groups of non intersecting and intersecting lines
+        List<HashSet<Line>> nonIntersectingGroup = identifyLineGroupsFromCategory(nonIntersectingLinesMap.entrySet());
+        List<HashSet<Line>> intersectingGroup = identifyLineGroupsFromCategory(intersectingLinesMap.entrySet());
+
 
         //Figure out from this group of non intersecting lines, closest lines between two group and
         // calculate their intersection point and figure out the order of the lines within the group
@@ -37,6 +36,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         //By travel I meant include points in Polygon class
         //Verify all the points are included in polygon
 
+
+        //Draw Component
         new DrawComponent(lines).draw();
         return new Polygon(null);
     }
@@ -59,5 +60,16 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         });
         nonIntersectingLinesMap.put(baseLine, nonIntersectingLineSet);
         intersectingLinesMap.put(baseLine, intersectingLineSet);
+    }
+
+    private List<HashSet<Line>> identifyLineGroupsFromCategory(Set<Map.Entry<Line, HashSet<Line>>> entries) {
+        List<HashSet<Line>> group = new ArrayList<>();
+        entries.stream().forEach(setEntry -> {
+            HashSet<Line> lineSet = new HashSet<>();
+            lineSet.add(setEntry.getKey());
+            lineSet.addAll(setEntry.getValue());
+            group.add(lineSet);
+        });
+        return group;
     }
 }

@@ -1,11 +1,11 @@
 package com.kadme.test;
 
+import com.kadme.test.exception.EmptyLineException;
 import com.kadme.test.model.Polygon;
 import com.kadme.test.service.OutlineBuilder;
 import com.kadme.test.service.impl.OutlineBuilderImpl;
-import com.kadme.test.util.GenerateRandomLines;
 
-import static com.kadme.test.util.OutlineBuilderConstants.*;
+import static com.kadme.test.util.OutlineBuilderConstants.EXAMPLE_1_SET;
 
 public class OutlineBuilderApplication {
 
@@ -13,9 +13,11 @@ public class OutlineBuilderApplication {
 
         OutlineBuilder outlineBuilder = new OutlineBuilderImpl();
 
-        Polygon polygon = outlineBuilder.buildOutline(new GenerateRandomLines().
-                generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
-                        MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE));
+        try {
+            Polygon polygon = outlineBuilder.buildOutline(EXAMPLE_1_SET);
+        } catch (EmptyLineException e) {
+            e.printStackTrace();
+        }
     }
 
 }

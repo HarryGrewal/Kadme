@@ -59,6 +59,7 @@ public class DrawComponent extends JComponent {
                 g2d.draw(new Line2D.Double(p1.getX(), p1.getY(),
                         p2.getX(), p2.getY()));
             }*/
+
             for (Line line : lines) {
                 g2d.draw(new Line2D.Double(line.getP1().getX(), line.getP1().getY(),
                         line.getP2().getX(), line.getP2().getY()));
@@ -159,7 +160,7 @@ public class DrawComponent extends JComponent {
 
     private void clear() {
         lines.clear();
-//        points.clear();
+        //    points.clear();
         repaint();
     }
 

@@ -15,6 +15,8 @@ public final class OutlineBuilderConstants {
     public static final String POLYGON = "POLYGON";
     public static final String LINE = "LINE";
     public static final String EXAMPLE_1 = "EXAMPLE_1";
+    public static final String EXAMPLE_2 = "EXAMPLE_2";
+    public static final String EXAMPLE_3 = "EXAMPLE_3";
 
     public static final Set<Line> EXAMPLE_1_SET = new HashSet<Line>() {{
         add(new Line(new Point(100, 50), new Point(350, 450)));

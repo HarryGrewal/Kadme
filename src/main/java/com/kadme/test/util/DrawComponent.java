@@ -76,10 +76,14 @@ public class DrawComponent extends JComponent {
 
         JPanel buttonsPanel = new JPanel();
         JButton drawEx1Button = new JButton("Example 1");
+        JButton drawEx2Button = new JButton("Example 2");
+        JButton drawEx3Button = new JButton("Example 3");
         JButton drawLinesButton = new JButton("Random Lines");
         JButton drawPolygonButton = new JButton("Draw Polygon");
         JButton clearButton = new JButton("Clear");
         buttonsPanel.add(drawEx1Button);
+        buttonsPanel.add(drawEx2Button);
+        buttonsPanel.add(drawEx3Button);
         buttonsPanel.add(drawLinesButton);
         buttonsPanel.add(drawPolygonButton);
         buttonsPanel.add(clearButton);
@@ -92,6 +96,29 @@ public class DrawComponent extends JComponent {
             public void actionPerformed(ActionEvent e) {
 
                 componentType = EXAMPLE_1;
+                lines = EXAMPLE_1_SET;
+                repaint();
+            }
+        });
+
+        //Draw Example 2 button
+        drawEx2Button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                componentType = EXAMPLE_2;
+                lines = EXAMPLE_2_SET;
+                repaint();
+            }
+        });
+
+        //Draw Example 3 button
+        drawEx3Button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                componentType = EXAMPLE_3;
+                lines = EXAMPLE_3_SET;
                 repaint();
             }
         });
@@ -101,7 +128,6 @@ public class DrawComponent extends JComponent {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 componentType = LINE;
                 lines = new GenerateRandomLines().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
                         MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);

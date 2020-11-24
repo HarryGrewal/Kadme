@@ -32,8 +32,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         sanitizeGroupMap(intersectingLinesMap);
 
         //Identify groups of non intersecting and intersecting lines
-        Set<LinkedHashSet<Line>> nonIntersectingGroup = groupCategorizedLines(nonIntersectingLinesMap.entrySet());
-        Set<LinkedHashSet<Line>> intersectingGroup = groupCategorizedLines(intersectingLinesMap.entrySet());
+        Set<HashSet<Line>> nonIntersectingGroup = groupCategorizedLines(nonIntersectingLinesMap.entrySet());
+        Set<HashSet<Line>> intersectingGroup = groupCategorizedLines(intersectingLinesMap.entrySet());
 
 
         //Figure out from this group of non intersecting lines, group boundaries and
@@ -43,48 +43,11 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         //By travel I meant include points in Polygon class
         //Verify all the points are included in polygon
 
-
-        List<Line> firstLine = new ArrayList<>();
-        List<Line> secondLine = new ArrayList<>();
-        List<Point> intersectionPoints = new ArrayList<>();
-
-        nonIntersectingGroup.forEach(setOfLine -> {
-
-            List<Point> pointsWithinGroup = new ArrayList<>();
-            setOfLine.forEach(point -> pointsWithinGroup.add(point.getP1().getX() < point.getP2().getX() ? point.getP1() : point.getP2()));
-
-            Point center = findCenter(pointsWithinGroup);
-            System.out.println("\n Center Point is  " + center);
-            pointsWithinGroup.sort(Collections.reverseOrder(new ByAngleComparator().compareByAngle(center)));
-            Point firstPoint = pointsWithinGroup.get(0);
-            Point lastPoint = pointsWithinGroup.get(pointsWithinGroup.size() - 1);
-
-            setOfLine.forEach(point -> {
-                Point pointX = point.getP1().getX() < point.getP2().getX() ? point.getP1() : point.getP2();
-
-                if (pointX == firstPoint)
-                    firstLine.add(point);
-
-                if (pointX == lastPoint)
-                    secondLine.add(point);
-            });
-        });
-
-        for (int i = 0; i < firstLine.size(); i++) {
-            intersectionPoints.add(findIntersectingPoint
-                    .findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
-        }
-
-        List<Point> allPoints = new ArrayList<>(intersectionPoints);
-
-        lines.forEach(l -> {
-            allPoints.add(l.getP1());
-            allPoints.add(l.getP2());
-        });
-
-
-        //Logic below did'nt work out as thought it would!
-    /*    Set<Point> finalListOfPoints = new LinkedHashSet<>();
+        // Logic below did'nt work out as thought it would!
+    /*
+                 //Ready for Red-Black action!
+        nonIntersectingGroup.forEach(this::sortLines);
+        Set<Point> finalListOfPoints = new LinkedHashSet<>();
         List<Line> intersectionLine = new ArrayList<>();
         nonIntersectingGroup.forEach(setOfLine -> {
                     Stream<Line> sorted = new TreeSet<>(setOfLine).stream()
@@ -107,13 +70,51 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         );*/
 
 
+        List<Line> firstLine = new ArrayList<>();
+        List<Line> secondLine = new ArrayList<>();
+        List<Point> intersectionPoints = new ArrayList<>();
+
+        nonIntersectingGroup.forEach(setOfLine -> {
+
+            List<Point> pointsWithinGroup = new ArrayList<>();
+            setOfLine.forEach(line -> pointsWithinGroup.add(line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2()));
+
+            Point center = findCenter(pointsWithinGroup);
+
+            System.out.println("\n Center Point is  " + center);
+
+            pointsWithinGroup.sort(Collections.reverseOrder(new ByAngleComparator().compareByAngle(center)));
+            Point firstPoint = pointsWithinGroup.get(0);
+            Point lastPoint = pointsWithinGroup.get(pointsWithinGroup.size() - 1);
+
+            setOfLine.forEach(line -> {
+                Point pointX = line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2();
+
+                if (pointX == firstPoint)
+                    firstLine.add(line);
+
+                if (pointX == lastPoint)
+                    secondLine.add(line);
+            });
+        });
+
+        for (int i = 0; i < firstLine.size(); i++) {
+            intersectionPoints.add(findIntersectingPoint
+                    .findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
+        }
+
+        List<Point> allPoints = new ArrayList<>(intersectionPoints);
+
+        lines.forEach(line -> {
+            allPoints.add(line.getP1());
+            allPoints.add(line.getP2());
+        });
+
         System.out.println("Set<Line>  size is " + lines.size() + "\n");
         System.out.println("\n nonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
         System.out.println("\n intersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
         System.out.println("\n Intersecting Points size is " + intersectionPoints.size() + "\n" + intersectionPoints);
         System.out.println("\n Final Polygon Points size is  " + allPoints.size() + "\n" + allPoints);
-
-
 
         //Draw Component
         new DrawComponent(lines, allPoints).draw();
@@ -170,7 +171,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     }
 
 
-    private Set<LinkedHashSet<Line>> groupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) {
+    private Set<HashSet<Line>> groupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) {
 
         /*
          * Example 1, Trace group from non-intersecting LinesMap entrySet
@@ -187,9 +188,9 @@ public class OutlineBuilderImpl implements OutlineBuilder {
          * ...
          * */
 
-        Set<LinkedHashSet<Line>> group = new LinkedHashSet<>();
+        Set<HashSet<Line>> group = new HashSet<>();
         entries.forEach(entry -> {
-            LinkedHashSet<Line> lineSet = new LinkedHashSet<>();
+            HashSet<Line> lineSet = new HashSet<>();
             lineSet.add(entry.getKey());
             lineSet.addAll(entry.getValue());
             group.add(lineSet);

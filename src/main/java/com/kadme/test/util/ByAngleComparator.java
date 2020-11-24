@@ -14,7 +14,7 @@ public class ByAngleComparator {
         return Math.atan2(dy, dx);
     }
 
-    public Comparator<Point> comparatorByAngle(
+    public Comparator<Point> compareByAngle(
             Point center) {
         this.center = center;
         final double centerX = center.getX();

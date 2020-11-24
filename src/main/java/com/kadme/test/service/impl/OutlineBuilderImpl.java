@@ -77,7 +77,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         nonIntersectingGroup.forEach(setOfLine -> {
 
             List<Point> pointsWithinGroup = new ArrayList<>();
-            setOfLine.forEach(line -> pointsWithinGroup.add(line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2()));
+            setOfLine.forEach(line -> pointsWithinGroup
+                    .add(line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2()));
 
             Point center = findCenter(pointsWithinGroup);
 

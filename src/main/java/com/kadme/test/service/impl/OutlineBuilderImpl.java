@@ -57,7 +57,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
 
             Point center = findCenter(pointsWithinGroup);
             System.out.println("\n Center Point is  " + center);
-            pointsWithinGroup.sort(Collections.reverseOrder(new ByAngleComparator().byAngleComparator(center)));
+            pointsWithinGroup.sort(Collections.reverseOrder(new ByAngleComparator().comparatorByAngle(center)));
             Point firstPoint = pointsWithinGroup.get(0);
             Point lastPoint = pointsWithinGroup.get(pointsWithinGroup.size() - 1);
 

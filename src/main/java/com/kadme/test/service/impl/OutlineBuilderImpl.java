@@ -18,14 +18,14 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     private FindIntersectingPoint findIntersectingPoint = new FindIntersectingPoint();
 
     @Override
-    public Polygon buildOutline(Set<Line> lines) {
+    public Polygon buildOutline(Set<Line> inputLines) {
 
         Map<Line, HashSet<Line>> nonIntersectingLinesMap = new HashMap<>();
         Map<Line, HashSet<Line>> intersectingLinesMap = new HashMap<>();
 
         //Create two maps; line as key and set of non intersecting & intersecting lines as respective values
-        lines.forEach(baseLine -> categorizeIntersectingNonIntersectingLines
-                (baseLine, lines, nonIntersectingLinesMap, intersectingLinesMap));
+        inputLines.forEach(baseLine -> categorizeIntersectingNonIntersectingLines
+                (baseLine, inputLines, nonIntersectingLinesMap, intersectingLinesMap));
 
         //Sanitize groups, remove empty sets
         sanitizeGroupMap(nonIntersectingLinesMap);
@@ -104,22 +104,22 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                     .findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
         }
 
-        List<Point> allPoints = new ArrayList<>(intersectionPoints);
+        List<Point> pointsOfPolygon = new ArrayList<>(intersectionPoints);
 
-        lines.forEach(line -> {
-            allPoints.add(line.getP1());
-            allPoints.add(line.getP2());
+        inputLines.forEach(line -> {
+            pointsOfPolygon.add(line.getP1());
+            pointsOfPolygon.add(line.getP2());
         });
 
-        System.out.println("Set<Line>  size is " + lines.size() + "\n");
+        System.out.println("Set<Line>  size is " + inputLines.size() + "\n");
         System.out.println("\n NonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
         System.out.println("\n IntersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
         System.out.println("\n Intersecting Points size is " + intersectionPoints.size() + "\n" + intersectionPoints);
-        System.out.println("\n Final Polygon Points size is  " + allPoints.size() + "\n" + allPoints);
+        System.out.println("\n Final Polygon Points size is  " + pointsOfPolygon.size() + "\n" + pointsOfPolygon);
 
         //Draw Component
-        new DrawComponent(lines, allPoints).draw();
-        return new Polygon(allPoints);
+        new DrawComponent(inputLines, pointsOfPolygon).draw();
+        return new Polygon(pointsOfPolygon);
     }
 
     private Point findCenter(List<Point> pointsWithinGroup) {

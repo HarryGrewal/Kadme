@@ -4,14 +4,13 @@ import com.kadme.test.model.Line;
 import com.kadme.test.model.Point;
 import com.kadme.test.model.Polygon;
 import com.kadme.test.service.OutlineBuilder;
+import com.kadme.test.util.ByAngleComparator;
 import com.kadme.test.util.CheckIfIntersect;
 import com.kadme.test.util.DrawComponent;
 import com.kadme.test.util.FindIntersectingPoint;
 
 import java.util.*;
-import java.util.stream.Stream;
 
-import static com.kadme.test.util.ByAngleComparator.byAngleComparator;
 
 public class OutlineBuilderImpl implements OutlineBuilder {
 
@@ -44,14 +43,57 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         //By travel I meant include points in Polygon class
         //Verify all the points are included in polygon
 
-        //Ready for Red-Black action!
-//        nonIntersectingGroup.forEach(this::sortLines);
 
-        Set<Point> finalListOfPoints = new LinkedHashSet<>();
+        List<Line> firstLine = new ArrayList<>();
+        List<Line> secondLine = new ArrayList<>();
+        List<Point> intersectionPoints = new ArrayList<>();
+
+        nonIntersectingGroup.forEach(setOfLine -> {
+
+            List<Point> pointsWithinGroup = new ArrayList<>();
+            setOfLine.forEach(point -> {
+                pointsWithinGroup.add(point.getP1().getX() < point.getP1().getX() ? point.getP1() : point.getP2());
+                //pointsWithinGroup.add(point.getP2());
+            });
+
+            Point center = findCenter(pointsWithinGroup);
+            Collections.sort(pointsWithinGroup,
+                    Collections.reverseOrder(new ByAngleComparator().byAngleComparator(center)));
+            Point firstPoint = pointsWithinGroup.get(0);
+            Point lastPoint = pointsWithinGroup.get(pointsWithinGroup.size() - 1);
+
+            setOfLine.forEach(point -> {
+                Point pointX = point.getP1().getX() < point.getP1().getX() ? point.getP1() : point.getP2();
+
+                if (pointX == firstPoint)
+                    firstLine.add(point);
+
+                if (pointX == lastPoint)
+                    secondLine.add(point);
+            });
+        });
+
+        for (int i = 0; i < firstLine.size(); i++) {
+            intersectionPoints.add(findIntersectingPoint
+                    .findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
+        }
+
+        List<Point> allPoints = new ArrayList<>(intersectionPoints);
+
+        lines.forEach(l -> {
+            allPoints.add(l.getP1());
+            allPoints.add(l.getP2());
+        });
+
+        Point center = findCenter(allPoints);
+        allPoints.sort(Collections.reverseOrder(new ByAngleComparator().byAngleComparator(center)));
+
+        //Logic below did'nt work out as thought it would!
+    /*    Set<Point> finalListOfPoints = new LinkedHashSet<>();
         List<Line> intersectionLine = new ArrayList<>();
         nonIntersectingGroup.forEach(setOfLine -> {
                     Stream<Line> sorted = new TreeSet<>(setOfLine).stream()
-                            .sorted(Collections.reverseOrder(byAngleComparator(centroid(setOfLine))));
+                            .sorted(Collections.reverseOrder(new ByAngleComparator().byAngleComparator(centroid(setOfLine))));
 
                     intersectionLine.add(sorted.parallel().findFirst().isPresent() ?
                             sorted.parallel().findFirst().get() : null);
@@ -67,36 +109,26 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                             .findIntersectionPoint(intersectionLine.get(++i),
                                     intersectionLine.get(++i)));
                 }
-        );
-
-        //finalListOfPoints.add(e)
+        );*/
 
 
         System.out.println("Set<Line>  size is " + lines.size() + "\n");
         System.out.println("\n nonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
         System.out.println("\n intersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
-        System.out.println("\n Intersecting lines size is  " + intersectionLine.size() + "\n" + intersectionLine);
-        System.out.println("\n Final list of points size is " + finalListOfPoints.size() + "\n" + finalListOfPoints);
+
         //Draw Component
-        new DrawComponent(lines).draw();
-        return new Polygon(null);
+        new DrawComponent(lines, allPoints).draw();
+        return new Polygon(allPoints);
     }
 
-/*    private void sortLines(Set<Line> setOfLine) {
-          List<Line> listOfLine = new ArrayList<>(setOfLine);
-        listOfLine.sort(Collections.reverseOrder(byAngleComparator(centroid(setOfLine))));
-    }*/
-
-    private Point centroid(Set<Line> setOfLine) {
+    private Point findCenter(List<Point> pointsWithinGroup) {
         double centroidX = 0, centroidY = 0;
 
-        for (Line knot : setOfLine) {
-            centroidX += knot.getP1().getX();
-            centroidX += knot.getP2().getX();
-            centroidY += knot.getP1().getY();
-            centroidY += knot.getP2().getY();
+        for (Point point : pointsWithinGroup) {
+            centroidX += point.getX();
+            centroidY += point.getY();
         }
-        return new Point(centroidX / (setOfLine.size() * 2), centroidY / (setOfLine.size() * 2));
+        return new Point(centroidX / pointsWithinGroup.size(), centroidY / pointsWithinGroup.size());
     }
 
     private void categorizeIntersectingNonIntersectingLines(Line baseLine, Set<Line> lines,
@@ -105,7 +137,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
 
         /*
         Example 1, Lines set trace for LinesMap
-        Set of lines -> l1, l2, l3, l4, l5, l6 ,l7 ,l8, l9 ; non-intersecting groups -> {l1, l2} {l3, l4, l5} {l6, l7, l8, l9}
+        Set of lines -> l1, l2, l3, l4, l5, l6 ,l7 ,l8, l9 ;
+        non-intersecting groups -> {l1, l2} {l3, l4, l5} {l6, l7, l8, l9}
         for baseLine l1
         non-intersecting : l1 {l2}
         intersectingLineSet : l1 {l3, l4, l5, l6, l7, l8, l9}

@@ -18,10 +18,6 @@ public class DrawComponent extends JComponent {
     private List<Point> points;
     private String componentType;
 
-    public DrawComponent(Set<Line> lines) {
-        this.lines = lines;
-    }
-
     public DrawComponent(Set<Line> lines, List<Point> points) {
         this.lines = lines;
         this.points = points;
@@ -51,16 +47,11 @@ public class DrawComponent extends JComponent {
                     BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 2.0f));
             g2d.setColor(Color.RED);
 
-            /*for (int i = 0; i < points.size() - 1; i++) {
+            for (int i = 0; i < points.size() - 1; i++) {
                 Point p1 = points.get(i);
                 Point p2 = points.get(++i);
                 g2d.draw(new Line2D.Double(p1.getX(), p1.getY(),
                         p2.getX(), p2.getY()));
-            }*/
-
-            for (Line line : lines) {
-                g2d.draw(new Line2D.Double(line.getP1().getX(), line.getP1().getY(),
-                        line.getP2().getX(), line.getP2().getY()));
             }
         }
 
@@ -92,7 +83,7 @@ public class DrawComponent extends JComponent {
         JButton drawEx3Button = new JButton("Example 3");
         JButton drawLinesButton = new JButton("Random Lines");
         JButton drawPolygonButton = new JButton("Draw Polygon");
-        JButton wearMaskButton = new JButton("Stay Safe");
+        JButton wearMaskButton = new JButton("Wear Mask");
         JButton clearButton = new JButton("Clear");
         buttonsPanel.add(drawEx1Button);
         buttonsPanel.add(drawEx2Button);
@@ -107,6 +98,9 @@ public class DrawComponent extends JComponent {
         drawEx1Button.addActionListener(e -> {
             componentType = EXAMPLE_1;
             lines = EXAMPLE_1_SET;
+            jFrame.dispose();
+            jFrame.setVisible(false);
+            new OutlineBuilderImpl().buildOutline(lines);
             repaint();
         });
 
@@ -114,6 +108,9 @@ public class DrawComponent extends JComponent {
         drawEx2Button.addActionListener(e -> {
             componentType = EXAMPLE_2;
             lines = EXAMPLE_2_SET;
+            jFrame.dispose();
+            jFrame.setVisible(false);
+            new OutlineBuilderImpl().buildOutline(lines);
             repaint();
         });
 
@@ -121,6 +118,9 @@ public class DrawComponent extends JComponent {
         drawEx3Button.addActionListener(e -> {
             componentType = EXAMPLE_3;
             lines = EXAMPLE_3_SET;
+            jFrame.dispose();
+            jFrame.setVisible(false);
+            new OutlineBuilderImpl().buildOutline(lines);
             repaint();
         });
 
@@ -155,7 +155,7 @@ public class DrawComponent extends JComponent {
 
     private void clear() {
         lines.clear();
-        //    points.clear();
+        points.clear();
         repaint();
     }
 

@@ -4,6 +4,7 @@ import com.kadme.test.model.Line;
 import com.kadme.test.model.Point;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,13 +28,13 @@ class DrawComponentTest {
         Line l8 = new Line(new Point(200, 50), new Point(200, 450));
 
         lines.add(l1);
-        lines.add(l3);
         lines.add(l2);
+        lines.add(l3);
         lines.add(l6);
         lines.add(l7);
         lines.add(l8);
 
-        DrawComponent drawComponent = new DrawComponent(lines);
+        DrawComponent drawComponent = new DrawComponent(lines, new ArrayList<>());
         drawComponent.draw();
 
         Thread.sleep(10000);

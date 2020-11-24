@@ -111,8 +111,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         });
 
         System.out.println("Set<Line>  size is " + lines.size() + "\n");
-        System.out.println("\n nonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
-        System.out.println("\n intersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
+        System.out.println("\n NonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
+        System.out.println("\n IntersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
         System.out.println("\n Intersecting Points size is " + intersectionPoints.size() + "\n" + intersectionPoints);
         System.out.println("\n Final Polygon Points size is  " + allPoints.size() + "\n" + allPoints);
 

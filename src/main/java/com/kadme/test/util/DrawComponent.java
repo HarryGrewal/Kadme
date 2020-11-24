@@ -36,22 +36,24 @@ public class DrawComponent extends JComponent {
         g2d.setStroke(new BasicStroke(3f));
         g2d.setColor(Color.BLACK);
 
-        for (Line line : lines) {
-            g2d.draw(new Line2D.Double(line.getP1().getX(), line.getP1().getY(),
-                    line.getP2().getX(), line.getP2().getY()));
-        }
+        if (componentType != WEAR_MASK) {
+            for (Line line : lines) {
+                g2d.draw(new Line2D.Double(line.getP1().getX(), line.getP1().getY(),
+                        line.getP2().getX(), line.getP2().getY()));
+            }
 
-        if (componentType == POLYGON) {
-            float[] dashingPattern1 = {2f, 2f};
-            g2d.setStroke(new BasicStroke(5f, BasicStroke.CAP_BUTT,
-                    BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 2.0f));
-            g2d.setColor(Color.RED);
+            if (componentType == POLYGON) {
+                float[] dashingPattern1 = {2f, 2f};
+                g2d.setStroke(new BasicStroke(5f, BasicStroke.CAP_BUTT,
+                        BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 2.0f));
+                g2d.setColor(Color.RED);
 
-            for (int i = 0; i < points.size() - 1; i++) {
-                Point p1 = points.get(i);
-                Point p2 = points.get(++i);
-                g2d.draw(new Line2D.Double(p1.getX(), p1.getY(),
-                        p2.getX(), p2.getY()));
+                for (int i = 0; i < points.size() - 1; i++) {
+                    Point p1 = points.get(i);
+                    Point p2 = points.get(++i);
+                    g2d.draw(new Line2D.Double(p1.getX(), p1.getY(),
+                            p2.getX(), p2.getY()));
+                }
             }
         }
 
@@ -133,6 +135,7 @@ public class DrawComponent extends JComponent {
         //Draw Real Polygon :) button
         wearMaskButton.addActionListener(e -> {
             componentType = WEAR_MASK;
+            buttonsPanel.remove(drawPolygonButton);
             repaint();
         });
 

@@ -104,22 +104,22 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                     .findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
         }
 
-        List<Point> pointsOfPolygon = new ArrayList<>(intersectionPoints);
+        List<Point> polygonPoints = new ArrayList<>(intersectionPoints);
 
         inputLines.forEach(line -> {
-            pointsOfPolygon.add(line.getP1());
-            pointsOfPolygon.add(line.getP2());
+            polygonPoints.add(line.getP1());
+            polygonPoints.add(line.getP2());
         });
 
         System.out.println("Set<Line>  size is " + inputLines.size() + "\n");
         System.out.println("\n NonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
         System.out.println("\n IntersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
         System.out.println("\n Intersecting Points size is " + intersectionPoints.size() + "\n" + intersectionPoints);
-        System.out.println("\n Final Polygon Points size is  " + pointsOfPolygon.size() + "\n" + pointsOfPolygon);
+        System.out.println("\n Final Polygon Points size is  " + polygonPoints.size() + "\n" + polygonPoints);
 
         //Draw Component
-        new DrawComponent(inputLines, pointsOfPolygon).draw();
-        return new Polygon(pointsOfPolygon);
+        new DrawComponent(inputLines, polygonPoints).draw();
+        return new Polygon(polygonPoints);
     }
 
     private Point findCenter(List<Point> pointsWithinGroup) {

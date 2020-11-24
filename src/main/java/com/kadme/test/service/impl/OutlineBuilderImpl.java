@@ -52,18 +52,17 @@ public class OutlineBuilderImpl implements OutlineBuilder {
 
             List<Point> pointsWithinGroup = new ArrayList<>();
             setOfLine.forEach(point -> {
-                pointsWithinGroup.add(point.getP1().getX() < point.getP1().getX() ? point.getP1() : point.getP2());
-                //pointsWithinGroup.add(point.getP2());
+                pointsWithinGroup.add(point.getP1().getX() < point.getP2().getX() ? point.getP1() : point.getP2());
             });
 
             Point center = findCenter(pointsWithinGroup);
-            Collections.sort(pointsWithinGroup,
-                    Collections.reverseOrder(new ByAngleComparator().byAngleComparator(center)));
+            System.out.println("\n Center Point is  " + center);
+            pointsWithinGroup.sort(Collections.reverseOrder(new ByAngleComparator().byAngleComparator(center)));
             Point firstPoint = pointsWithinGroup.get(0);
             Point lastPoint = pointsWithinGroup.get(pointsWithinGroup.size() - 1);
 
             setOfLine.forEach(point -> {
-                Point pointX = point.getP1().getX() < point.getP1().getX() ? point.getP1() : point.getP2();
+                Point pointX = point.getP1().getX() < point.getP2().getX() ? point.getP1() : point.getP2();
 
                 if (pointX == firstPoint)
                     firstLine.add(point);
@@ -85,8 +84,6 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             allPoints.add(l.getP2());
         });
 
-        Point center = findCenter(allPoints);
-        allPoints.sort(Collections.reverseOrder(new ByAngleComparator().byAngleComparator(center)));
 
         //Logic below did'nt work out as thought it would!
     /*    Set<Point> finalListOfPoints = new LinkedHashSet<>();
@@ -115,6 +112,11 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         System.out.println("Set<Line>  size is " + lines.size() + "\n");
         System.out.println("\n nonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
         System.out.println("\n intersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
+        System.out.println("\n intersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
+        System.out.println("\n Intersecting Points size is " + intersectionPoints.size() + "\n" + intersectionPoints);
+        System.out.println("\n Final Polygon Points size is  " + allPoints.size() + "\n" + allPoints);
+
+
 
         //Draw Component
         new DrawComponent(lines, allPoints).draw();

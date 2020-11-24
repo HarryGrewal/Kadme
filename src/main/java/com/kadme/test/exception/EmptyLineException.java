@@ -8,5 +8,4 @@ public class EmptyLineException extends Exception {
         super("Everything breaks, so did I! Hva vil du mere?");
     }
 
-
 }

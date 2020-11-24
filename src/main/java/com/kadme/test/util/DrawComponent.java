@@ -84,23 +84,19 @@ public class DrawComponent extends JComponent {
         JButton drawLinesButton = new JButton("Random Lines");
         JButton drawPolygonButton = new JButton("Draw Polygon");
         JButton wearMaskButton = new JButton("Wear Mask");
-        JButton clearButton = new JButton("Clear");
         buttonsPanel.add(drawEx1Button);
         buttonsPanel.add(drawEx2Button);
         buttonsPanel.add(drawEx3Button);
         buttonsPanel.add(drawLinesButton);
         buttonsPanel.add(drawPolygonButton);
         buttonsPanel.add(wearMaskButton);
-        buttonsPanel.add(clearButton);
         jFrame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 
         //Draw Example 1 button
         drawEx1Button.addActionListener(e -> {
             componentType = EXAMPLE_1;
             lines = EXAMPLE_1_SET;
-            jFrame.dispose();
-            jFrame.setVisible(false);
-            new OutlineBuilderImpl().buildOutline(lines);
+            redraw(jFrame);
             repaint();
         });
 
@@ -108,9 +104,7 @@ public class DrawComponent extends JComponent {
         drawEx2Button.addActionListener(e -> {
             componentType = EXAMPLE_2;
             lines = EXAMPLE_2_SET;
-            jFrame.dispose();
-            jFrame.setVisible(false);
-            new OutlineBuilderImpl().buildOutline(lines);
+            redraw(jFrame);
             repaint();
         });
 
@@ -118,9 +112,7 @@ public class DrawComponent extends JComponent {
         drawEx3Button.addActionListener(e -> {
             componentType = EXAMPLE_3;
             lines = EXAMPLE_3_SET;
-            jFrame.dispose();
-            jFrame.setVisible(false);
-            new OutlineBuilderImpl().buildOutline(lines);
+            redraw(jFrame);
             repaint();
         });
 
@@ -129,9 +121,7 @@ public class DrawComponent extends JComponent {
             componentType = LINE;
             lines = new GenerateRandomLines().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
                     MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
-            jFrame.dispose();
-            jFrame.setVisible(false);
-            new OutlineBuilderImpl().buildOutline(lines);
+            redraw(jFrame);
         });
 
         //Draw Polygon button
@@ -146,17 +136,14 @@ public class DrawComponent extends JComponent {
             repaint();
         });
 
-        //Clear Button
-        clearButton.addActionListener(e -> clear());
-
         jFrame.pack();
         jFrame.setVisible(true);
     }
 
-    private void clear() {
-        lines.clear();
-        points.clear();
-        repaint();
+    private void redraw(JFrame jFrame) {
+        jFrame.dispose();
+        jFrame.setVisible(false);
+        new OutlineBuilderImpl().buildOutline(lines);
     }
 
 }

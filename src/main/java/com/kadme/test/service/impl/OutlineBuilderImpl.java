@@ -51,9 +51,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         nonIntersectingGroup.forEach(setOfLine -> {
 
             List<Point> pointsWithinGroup = new ArrayList<>();
-            setOfLine.forEach(point -> {
-                pointsWithinGroup.add(point.getP1().getX() < point.getP2().getX() ? point.getP1() : point.getP2());
-            });
+            setOfLine.forEach(point -> pointsWithinGroup.add(point.getP1().getX() < point.getP2().getX() ? point.getP1() : point.getP2()));
 
             Point center = findCenter(pointsWithinGroup);
             System.out.println("\n Center Point is  " + center);
@@ -111,7 +109,6 @@ public class OutlineBuilderImpl implements OutlineBuilder {
 
         System.out.println("Set<Line>  size is " + lines.size() + "\n");
         System.out.println("\n nonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
-        System.out.println("\n intersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
         System.out.println("\n intersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
         System.out.println("\n Intersecting Points size is " + intersectionPoints.size() + "\n" + intersectionPoints);
         System.out.println("\n Final Polygon Points size is  " + allPoints.size() + "\n" + allPoints);

@@ -39,9 +39,7 @@ public class CheckIfIntersect {
         if (o3 == 0 && onSegment(p2, p1, q2)) return true;
 
         // p2, q2 and q1 are collinear and q1 lies on segment p2q2 
-        if (o4 == 0 && onSegment(p2, q1, q2)) return true;
-
-        return false; // Doesn't fall in any of the above cases 
+        return o4 == 0 && onSegment(p2, q1, q2);// Doesn't fall in any of the above cases
     }
 
     // To find orientation of ordered triplet (p, q, r).
@@ -60,11 +58,8 @@ public class CheckIfIntersect {
     // Given three collinear points p, q, r,
     // the function checks if point q lies on line segment 'pr'
     private boolean onSegment(Point p, Point q, Point r) {
-        if (q.getX() <= Math.max(p.getX(), r.getX()) && q.getX() >= Math.min(p.getX(), r.getX()) &&
-                q.getY() <= Math.max(p.getY(), r.getY()) && q.getY() >= Math.min(p.getY(), r.getY()))
-            return true;
-
-        return false;
+        return q.getX() <= Math.max(p.getX(), r.getX()) && q.getX() >= Math.min(p.getX(), r.getX()) &&
+                q.getY() <= Math.max(p.getY(), r.getY()) && q.getY() >= Math.min(p.getY(), r.getY());
     }
 
 }

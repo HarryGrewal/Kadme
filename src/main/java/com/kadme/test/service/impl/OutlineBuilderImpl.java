@@ -14,8 +14,8 @@ import java.util.*;
 
 public class OutlineBuilderImpl implements OutlineBuilder {
 
-    private CheckIfIntersect checkIfIntersect = new CheckIfIntersect();
-    private FindIntersectingPoint findIntersectingPoint = new FindIntersectingPoint();
+    private final CheckIfIntersect checkIfIntersect = new CheckIfIntersect();
+    private final FindIntersectingPoint findIntersectingPoint = new FindIntersectingPoint();
 
     @Override
     public Polygon buildOutline(Set<Line> inputLines) {

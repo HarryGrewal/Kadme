@@ -5,7 +5,6 @@ import com.kadme.test.model.Point;
 import java.util.Comparator;
 
 public class ByAngleComparator {
-    private Point center;
 
     private static double angleTheta(
             double x0, double y0, double x1, double y1) {
@@ -16,7 +15,6 @@ public class ByAngleComparator {
 
     public Comparator<Point> compareByAngle(
             Point center) {
-        this.center = center;
         final double centerX = center.getX();
         final double centerY = center.getY();
         return (p0, p1) -> {

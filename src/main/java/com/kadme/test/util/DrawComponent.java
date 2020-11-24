@@ -14,8 +14,8 @@ import static com.kadme.test.util.OutlineBuilderConstants.*;
 
 public class DrawComponent extends JComponent {
 
+    private final List<Point> points;
     private Set<Line> lines;
-    private List<Point> points;
     private String componentType;
 
     public DrawComponent(Set<Line> lines, List<Point> points) {
@@ -121,7 +121,7 @@ public class DrawComponent extends JComponent {
         //Draw new Lines button
         drawLinesButton.addActionListener(e -> {
             componentType = LINE;
-            lines = new GenerateRandomLines().generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
+            lines = GenerateRandomLines.generateRandomLines(MIN_VALUE_FOR_POINT_GENERATION,
                     MAX_VALUE_FOR_POINT_GENERATION, LINE_RANGE);
             redraw(jFrame);
         });

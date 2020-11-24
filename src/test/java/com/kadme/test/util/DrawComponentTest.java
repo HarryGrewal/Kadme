@@ -37,7 +37,7 @@ class DrawComponentTest {
         DrawComponent drawComponent = new DrawComponent(lines, new ArrayList<>());
         drawComponent.draw();
 
-        Thread.sleep(10000);
+        Thread.sleep(1000);
     }
 
 }

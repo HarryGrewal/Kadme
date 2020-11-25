@@ -5,6 +5,8 @@ import com.kadme.test.model.Point;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static com.kadme.test.util.OutlineBuilderConstants.INVALID_POINT;
+
 class FindIntersectingPointTest {
 
     private static final Point A = new Point(1, 1);
@@ -27,7 +29,7 @@ class FindIntersectingPointTest {
         Point p2 = findIntersection.findIntersectionPoint(new Line(E, F), new Line(G, H));
 
         Assertions.assertEquals(new Point(2.4, 2.4), p1);
-        Assertions.assertEquals(new Point(Double.MAX_VALUE, Double.MAX_VALUE), p2);
+        Assertions.assertEquals(INVALID_POINT, p2);
 
     }
 }

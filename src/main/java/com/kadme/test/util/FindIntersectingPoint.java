@@ -52,7 +52,7 @@ public class FindIntersectingPoint {
 
             // To check if (x, y) is on the segment
             return ((minX <= x && maxX >= x) && (minY <= y && maxY >= y)) ?
-                    new Point(x, y) : new Point(Double.MAX_VALUE, Double.MAX_VALUE);
+                    new Point(x, y) : INVALID_POINT;
 
         }
     }

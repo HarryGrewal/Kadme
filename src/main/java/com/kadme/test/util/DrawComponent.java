@@ -54,9 +54,9 @@ public class DrawComponent extends JComponent {
                     g2d.draw(new Line2D.Double(p1.getX(), p1.getY(),
                             p2.getX(), p2.getY()));
                 }
-                g2d.draw(new Line2D.Double(points.get(points.size() - 1).getX(),
+              /*  g2d.draw(new Line2D.Double(points.get(points.size() - 1).getX(),
                         points.get(points.size() - 1).getY(),
-                        points.get(0).getX(), points.get(0).getY()));
+                        points.get(0).getX(), points.get(0).getY()));*/
             }
         }
 

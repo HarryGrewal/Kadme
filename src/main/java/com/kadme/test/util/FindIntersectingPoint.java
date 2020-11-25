@@ -3,6 +3,8 @@ package com.kadme.test.util;
 import com.kadme.test.model.Line;
 import com.kadme.test.model.Point;
 
+import static com.kadme.test.util.GenerateRandomLines.GenerateRandomPoints.GenerateRandomCoordinate.round;
+import static com.kadme.test.util.OutlineBuilderConstants.DECIMAL_RANGE;
 import static com.kadme.test.util.OutlineBuilderConstants.INVALID_POINT;
 
 /*
@@ -48,6 +50,10 @@ public class FindIntersectingPoint {
         } else {
             double x = (b2 * c1 - b1 * c2) / determinant;
             double y = (a1 * c2 - a2 * c1) / determinant;
+
+            //rounding to 3 decimal
+            x = round(x, DECIMAL_RANGE);
+            y = round(y, DECIMAL_RANGE);
 
             double minX = Double.min(l1.getP1().getX(), l1.getP2().getX());
             double maxX = Double.max(l1.getP1().getX(), l1.getP2().getX());

@@ -14,6 +14,7 @@ public final class OutlineBuilderConstants {
     public static final double MAX_VALUE_FOR_POINT_GENERATION = 600.0;
     public static final int LINE_RANGE = 10;
     public static final int POINT_RANGE = 20;
+    public static final int DECIMAL_RANGE = 2;
     public static final String POLYGON = "POLYGON";
     public static final String WEAR_MASK = "WEAR_MASK";
     public static final String LINE = "LINE";

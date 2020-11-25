@@ -93,10 +93,10 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             setOfLine.forEach(line -> {
                 Point pointX = line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2();
 
-                if (pointX == firstPoint)
+                if (pointX.equals(firstPoint)) ;
                     firstLine.add(line);
 
-                if (pointX == lastPoint)
+                if (pointX.equals(lastPoint)) ;
                     secondLine.add(line);
             });
         });

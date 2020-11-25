@@ -51,7 +51,7 @@ public class FindIntersectingPoint {
             double x = (b2 * c1 - b1 * c2) / determinant;
             double y = (a1 * c2 - a2 * c1) / determinant;
 
-            //rounding to 3 decimal
+            //rounding to 2 decimal
             x = round(x, DECIMAL_RANGE);
             y = round(y, DECIMAL_RANGE);
 

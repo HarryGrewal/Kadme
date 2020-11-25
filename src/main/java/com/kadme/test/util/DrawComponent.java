@@ -43,9 +43,9 @@ public class DrawComponent extends JComponent {
             }
 
             if (componentType == POLYGON) {
-                float[] dashingPattern1 = {2f, 2f};
-                g2d.setStroke(new BasicStroke(5f, BasicStroke.CAP_BUTT,
-                        BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 2.0f));
+               /* float[] dashingPattern = {16.0f,20.0f};
+                g2d.setStroke(new BasicStroke(4.0f, BasicStroke.CAP_SQUARE,
+                        BasicStroke.JOIN_MITER, 10.0f, dashingPattern, 0.0f));*/
                 g2d.setColor(Color.RED);
 
                 for (int i = 0; i < points.size() - 1; i++) {

@@ -50,8 +50,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
          Do like wise with tail*/
 
 
-        List<Line> firstLine = new ArrayList<>();
-        List<Line> secondLine = new ArrayList<>();
+
         List<Point> intersectionPoints = new ArrayList<>();
         List<Point> polygonPoints = new ArrayList<>();
 
@@ -112,12 +111,15 @@ public class OutlineBuilderImpl implements OutlineBuilder {
 
 
             if (nonIntersectingGroup.size() == 1) {
-                for (int i = headArrayList.size(); i-- > 0; ) {
-                    polygonPoints.add(headArrayList.get(i));
-                }
-                for (Point point : tailArrayList) {
-                    polygonPoints.add(point);
-                }
+                //simple logic to traverse boundary
+                polygonPoints.add(headArrayList.get(headArrayList.size() - 1));
+                polygonPoints.add(headArrayList.get(0));
+                polygonPoints.add(headArrayList.get(0));
+                polygonPoints.add(tailArrayList.get(0));
+                polygonPoints.add(tailArrayList.get(0));
+                polygonPoints.add(tailArrayList.get(tailArrayList.size() - 1));
+                polygonPoints.add(tailArrayList.get(tailArrayList.size() - 1));
+                polygonPoints.add(headArrayList.get(headArrayList.size() - 1));
             }
 
             /*setOfLinesInOneGroup.forEach(line -> {

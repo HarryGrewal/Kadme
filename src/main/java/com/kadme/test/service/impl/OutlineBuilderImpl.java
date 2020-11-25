@@ -103,27 +103,27 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             setOfLine.forEach(line -> {
                 Point pointX = line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2();
 
-                logger.info("\nFor PointX  " + " line.getP1().getX(): " + line.getP1().getX() + " < "
-                        + " line.getP2().getX() " + " ? " + "line.getP1() : " + line.getP1() + "line.getP2() " + line.getP2());
+                logger.debug("\nFor PointX  " + pointX + " line.getP1().getX(): " + line.getP1().getX() + "<"
+                        + " line.getP2().getX() " + "?" + "line.getP1() : " + line.getP1() + "line.getP2() " + line.getP2());
 
                 if (pointX.equals(firstPoint))
                     firstLine.add(line);
 
-                logger.info("\nPointX " + pointX + " is equal to first point " + firstPoint + "and added to first line " + firstLine);
+                logger.debug("\nPointX " + pointX + " is equal to first point " + firstPoint + "and added to\n first line " + firstLine);
 
                 if (pointX.equals(lastPoint))
                     secondLine.add(line);
 
-                logger.info("\nPointX " + pointX + " is equal to first point " + firstPoint + "and added to first line " + firstLine);
+                logger.debug("\nPointX " + pointX + " is equal to last point " + firstPoint + "and added to\n second line " + firstLine);
             });
         });
 
         for (int i = 0; i < firstLine.size(); i++) {
             Point intersectionPoint = findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i));
 
-            logger.info("\nFirst Line " + i + " position " + firstLine.get(i) + " line");
-            logger.info("\nSecond Line " + i + " position " + secondLine.get(i) + " line");
-            logger.info("\nIntersectionPoint returns " + findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
+            logger.debug("\nFirst Line " + i + " position " + firstLine.get(i) + " line");
+            logger.debug("\nSecond Line " + i + " position " + secondLine.get(i) + " line");
+            logger.debug("\nIntersectionPoint returns " + findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
 
             if (!intersectionPoint.equals(INVALID_POINT))
                 intersectionPoints.add(intersectionPoint);
@@ -154,8 +154,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         }
         final Point point = new Point(centroidX / pointsWithinGroup.size(), centroidY / pointsWithinGroup.size());
 
-        logger.info("\nPointsWithinGroup in findCenter " + "\n" + pointsWithinGroup);
-        logger.info("\nCenter is " + point);
+        logger.debug("\nPointsWithinGroup in findCenter " + "\n" + pointsWithinGroup);
+        logger.debug("\nCenter is " + point);
 
         return point;
     }
@@ -189,11 +189,11 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                 if (findIntersectingPoint.ifIntersect(baseLine, line)) {
                     intersectingLineSet.add(line);
 
-                    logger.info("\nLine added to IntersectingLineSet " + "\n" + line + " \nbase line is : " + baseLine);
+                    logger.debug("\nLine added to IntersectingLineSet " + "\n" + line + " \nbase line is : " + baseLine);
                 } else {
                     nonIntersectingLineSet.add(line);
 
-                    logger.info("\nLine added to NonIntersectingLineSet " + "\n" + line + " \nbase line is : " + baseLine);
+                    logger.debug("\nLine added to NonIntersectingLineSet " + "\n" + line + " \nbase line is : " + baseLine);
                 }
             }
         });
@@ -226,7 +226,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
          * at list location 3 for l4 -> {l1, l2, l4, l6, l7, l8, l9}
          * ...
          * */
-
+        logger.info("\ngroupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) input size " + entries.size() + "\n" + entries);
         Set<HashSet<Line>> group = new HashSet<>();
         entries.forEach(entry -> {
             HashSet<Line> lineSet = new HashSet<>();
@@ -234,15 +234,16 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             lineSet.addAll(entry.getValue());
             group.add(lineSet);
         });
-        logger.info("\nGroup after categorizing" + "\n" + group);
+        logger.info("\nGroup after categorizing size " + group.size() + "\n" + group);
 
         return group;
     }
 
     private void sanitizeGroupMap(Map<Line, HashSet<Line>> groupMap) {
+        logger.info("\nGroupMap before sanitizing size" + groupMap.size() + "\n" + groupMap);
         groupMap.entrySet().removeIf(entry ->
                 (entry.getValue().isEmpty()));
-        logger.info("\nGroupMap after sanitizing" + "\n" + groupMap);
+        logger.info("\nGroupMap after sanitizing size" + groupMap.size() + "\n" + groupMap);
     }
 
 }

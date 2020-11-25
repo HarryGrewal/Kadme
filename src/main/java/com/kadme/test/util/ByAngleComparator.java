@@ -14,7 +14,7 @@ public class ByAngleComparator {
         double dy = y1 - y0;
         final double v = Math.atan2(dy, dx);
 
-        logger.info("\nangelTheta from comparator returns " + v);
+        logger.debug("\nangelTheta from comparator returns " + v);
         return v;
 
 
@@ -33,7 +33,7 @@ public class ByAngleComparator {
 
             final int compare = Double.compare(angle0, angle1);
 
-            logger.info("\nCompare by angle returns " + compare + " angle0 = " + angle0 + " angle1 = " + angle1 + "\n");
+            logger.debug("\nCompare by angle returns " + compare + " angle0 = " + angle0 + " angle1 = " + angle1 + "\n");
             return compare;
         };
     }

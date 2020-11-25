@@ -12,8 +12,6 @@ import org.apache.log4j.Logger;
 
 import java.util.*;
 
-import static com.kadme.test.util.OutlineBuilderConstants.INVALID_POINT;
-
 
 public class OutlineBuilderImpl implements OutlineBuilder {
     private final static Logger logger = Logger.getLogger(OutlineBuilderImpl.class);
@@ -46,7 +44,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         //Line of thoughts
         /*From the nonIntersectingGroup -> take head of every line -> find center -> sort clockwise
          nonIntersectingGroup -> take tail of every line -> find center -> sort anticlockwise
-        Fill polygon -> connect sorted heads of nonIntersectingGroup until last head
+         Fill polygon -> connect sorted heads of nonIntersectingGroup until last head
          Find intersection (I) of last line of first group with first line of second group
          connect last head of first group with intersection point (I) -> connect (I) with head of second group
          Do like wise with tail*/
@@ -55,45 +53,83 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         List<Line> firstLine = new ArrayList<>();
         List<Line> secondLine = new ArrayList<>();
         List<Point> intersectionPoints = new ArrayList<>();
+        List<Point> polygonPoints = new ArrayList<>();
 
-        nonIntersectingGroup.forEach(setOfLine -> {
+        nonIntersectingGroup.forEach(setOfLinesInOneGroup -> {
 
-            List<Point> pointsWithinGroup = new ArrayList<>();
-            setOfLine.forEach(line -> pointsWithinGroup
-                    .add(line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2()));
-
-            logger.info("\npointsWithinGroup List filled with nonIntersectingGroup.forEach.setOfLine.line  size is " + pointsWithinGroup.size());
-            logger.info("\npointsWithinGroup List before sorting is " + "\n" + pointsWithinGroup);
-
-            Point center = findCenter(pointsWithinGroup);
-            pointsWithinGroup.sort(Collections.reverseOrder(new ByAngleComparator().compareByAngle(center)));
-
-            Point firstPoint = pointsWithinGroup.get(0);
-            Point lastPoint = pointsWithinGroup.get(pointsWithinGroup.size() - 1);
-
-            logger.info("\npointsWithinGroup List after sorting is " + "\n" + pointsWithinGroup);
-            logger.info("\nFirst Point is " + firstPoint);
-            logger.info("\nLast Point is " + lastPoint);
-
-            setOfLine.forEach(line -> {
-                Point pointX = line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2();
-
-                logger.debug("\nFor PointX  " + pointX + " line.getP1().getX(): " + line.getP1().getX() + "<"
-                        + " line.getP2().getX() " + "?" + "line.getP1() : " + line.getP1() + "line.getP2() " + line.getP2());
-
-                if (pointX.equals(firstPoint))
-                    firstLine.add(line);
-
-                logger.debug("\nPointX " + pointX + " is equal to first point " + firstPoint + "and added to\n first line " + firstLine);
-
-                if (pointX.equals(lastPoint))
-                    secondLine.add(line);
-
-                logger.debug("\nPointX " + pointX + " is equal to last point " + firstPoint + "and added to\n second line " + firstLine);
+            List<List<Point>> headTailWithinOneGroup = new ArrayList<>();
+            setOfLinesInOneGroup.forEach(line ->
+            {
+                //create a list of list -> head point and tail point of a line relative to progressive X
+                final double x1 = line.getP1().getX();
+                final double y1 = line.getP1().getY();
+                final double x2 = line.getP2().getX();
+                final double y2 = line.getP2().getY();
+                Point head = null, tail = null;
+                //corner case: avoid a point
+                if (!(x1 == x2 && y1 == y2)) {
+                    if (x1 == x2) {
+                        double minY = Double.min(y1, y2);
+                        double maxY = Double.max(y1, y2);
+                        head = new Point(x1, minY);
+                        tail = new Point(x1, maxY);
+                    } else if (Double.min(x1, x2) == x1) {
+                        head = new Point(x1, y1);
+                        tail = new Point(x2, y2);
+                    } else {
+                        head = new Point(x2, y2);
+                        tail = new Point(x1, y1);
+                    }
+                }
+                headTailWithinOneGroup.add(Arrays.asList(head, tail));
             });
+
+            List<Point> headArrayList = getHeadOrTailArrayList(headTailWithinOneGroup, "HEAD");
+            List<Point> tailArrayList = getHeadOrTailArrayList(headTailWithinOneGroup, "TAIL");
+            logger.info("\nHeadArrayList before sorting size is " + "\n" + headArrayList);
+            logger.info("\nTailArrayList before sorting size is " + "\n" + tailArrayList);
+
+            Point headCenter = findCenter(headArrayList);
+            Point tailCenter = findCenter(tailArrayList);
+            logger.info("\nHead Center is " + headCenter);
+            logger.info("\nTail Center is " + tailCenter);
+
+            headArrayList.sort(new ByAngleComparator().compareByAngle(headCenter));
+            tailArrayList.sort(new ByAngleComparator().compareByAngle(tailCenter));
+            logger.info("\nHeadArrayList after sorting is " + "\n" + headArrayList);
+            logger.info("\nTailArrayList after sorting is " + "\n" + tailArrayList);
+
+            Point firstHeadPoint = headArrayList.get(0);
+            Point lastHeadPoint = headArrayList.get(headArrayList.size() - 1);
+            Point firstTailPoint = tailArrayList.get(0);
+            Point lastTailPoint = tailArrayList.get(tailArrayList.size() - 1);
+
+            logger.info("\nFirst Head Point is " + firstHeadPoint);
+            logger.info("\nLast  Head Point is " + lastHeadPoint);
+            logger.info("\nFirst Tail Point is " + firstTailPoint);
+            logger.info("\nLast  Tail Point is " + lastTailPoint);
+            logger.info("\nLast  Tail Point is " + lastTailPoint);
+
+
+            if (nonIntersectingGroup.size() == 1) {
+                for (int i = headArrayList.size(); i-- > 0; ) {
+                    polygonPoints.add(headArrayList.get(i));
+                }
+                for (Point point : tailArrayList) {
+                    polygonPoints.add(point);
+                }
+            }
+
+            /*setOfLinesInOneGroup.forEach(line -> {
+                Point pointX = line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2();
+                if (pointX.equals(firstHeadPoint))
+                    firstLine.add(line);
+                if (pointX.equals(lastHeadPoint))
+                    secondLine.add(line);
+            });*/
         });
 
-        for (int i = 0; i < firstLine.size(); i++) {
+        /*for (int i = 0; i < firstLine.size(); i++) {
             Point intersectionPoint = findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i));
 
             logger.debug("\nFirst Line " + i + " position " + firstLine.get(i) + " line");
@@ -108,12 +144,12 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             logger.info("\n IntersectionPoints list size is " + intersectionPoints.size() + "\n" + intersectionPoints);
         }
 
-        List<Point> polygonPoints = new ArrayList<>(intersectionPoints);
+        List<Point> polygonPoints = new ArrayList<>(intersectionPoints);*/
 
-        inputLines.forEach(line -> {
+       /* inputLines.forEach(line -> {
             polygonPoints.add(line.getP1());
             polygonPoints.add(line.getP2());
-        });
+        });*/
 
         logger.info("\n Final Polygon Points size is  " + polygonPoints.size() + "\n" + polygonPoints);
 
@@ -122,20 +158,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         return new Polygon(polygonPoints);
     }
 
-    private Point findCenter(List<Point> pointsWithinGroup) {
-        double centroidX = 0, centroidY = 0;
 
-        for (Point point : pointsWithinGroup) {
-            centroidX += point.getX();
-            centroidY += point.getY();
-        }
-        final Point point = new Point(centroidX / pointsWithinGroup.size(), centroidY / pointsWithinGroup.size());
 
-        logger.debug("\nPointsWithinGroup in findCenter " + "\n" + pointsWithinGroup);
-        logger.debug("\nCenter is " + point);
-
-        return point;
-    }
 
     private void categorizeIntersectingNonIntersectingLines(Line baseLine, Set<Line> lines,
                                                             Map<Line, HashSet<Line>> nonIntersectingLinesMap,
@@ -221,6 +245,31 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         groupMap.entrySet().removeIf(entry ->
                 (entry.getValue().isEmpty()));
         logger.info("\nGroupMap after sanitizing size" + groupMap.size() + "\n" + groupMap);
+    }
+
+    private Point findCenter(List<Point> relativePointsWithinGroup) {
+        double centroidX = 0, centroidY = 0;
+
+        for (Point point : relativePointsWithinGroup) {
+            centroidX += point.getX();
+            centroidY += point.getY();
+        }
+        return new Point(centroidX / relativePointsWithinGroup.size(), centroidY / relativePointsWithinGroup.size());
+    }
+
+    private List<Point> getHeadOrTailArrayList(List<List<Point>> headTailWithinGroup, String relativeTo) {
+        List<Point> relativePointsWithinGroup = new ArrayList<>();
+        if (relativeTo.equals("HEAD")) {
+            headTailWithinGroup.forEach(headTailList -> {
+                relativePointsWithinGroup.add(headTailList.get(0));
+            });
+        }
+        if (relativeTo.equals("TAIL")) {
+            headTailWithinGroup.forEach(headTailList -> {
+                relativePointsWithinGroup.add(headTailList.get(1));
+            });
+        }
+        return relativePointsWithinGroup;
     }
 
 

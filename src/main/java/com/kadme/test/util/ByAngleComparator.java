@@ -16,8 +16,6 @@ public class ByAngleComparator {
 
         logger.debug("\nangelTheta from comparator returns " + v);
         return v;
-
-
     }
 
     public Comparator<Point> compareByAngle(
@@ -34,6 +32,7 @@ public class ByAngleComparator {
             final int compare = Double.compare(angle0, angle1);
 
             logger.debug("\nCompare by angle returns " + compare + " angle0 = " + angle0 + " angle1 = " + angle1 + "\n");
+            logger.debug("\nCenterX = " + centerX + " CenterY = " + centerY + "\n");
             return compare;
         };
     }

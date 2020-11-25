@@ -49,7 +49,7 @@ public final class OutlineBuilderConstants {
         add(new Line(new Point(185, 50), new Point(190, 450)));
         add(new Line(new Point(190, 50), new Point(195, 450)));
         add(new Line(new Point(195, 50), new Point(200, 450)));
-        add(new Line(new Point(200, 50), new Point(250, 450)));
+        add(new Line(new Point(200, 50), new Point(205, 450)));
     }};
 
     private OutlineBuilderConstants() {

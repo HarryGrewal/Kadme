@@ -6,7 +6,7 @@
 
     <groupId>com.kadme.test</groupId>
     <artifactId>assignment</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>ShortestPolygon</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -28,6 +28,21 @@
 
     <build>
         <plugins>
+            <plugin>
+                <!-- Build an executable JAR -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>com.kadme.test.OutlineBuilderApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
 
             <!-- Need at least 2.22.0 to support JUnit 5 -->
             <plugin>

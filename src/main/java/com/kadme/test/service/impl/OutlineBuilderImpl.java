@@ -11,6 +11,8 @@ import com.kadme.test.util.FindIntersectingPoint;
 
 import java.util.*;
 
+import static com.kadme.test.util.OutlineBuilderConstants.INVALID_POINT;
+
 
 public class OutlineBuilderImpl implements OutlineBuilder {
 
@@ -100,8 +102,9 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         });
 
         for (int i = 0; i < firstLine.size(); i++) {
-            intersectionPoints.add(findIntersectingPoint
-                    .findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
+            Point intersectionPoint = findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i));
+            if (!intersectionPoint.equals(INVALID_POINT))
+                intersectionPoints.add(intersectionPoint);
         }
 
         List<Point> polygonPoints = new ArrayList<>(intersectionPoints);

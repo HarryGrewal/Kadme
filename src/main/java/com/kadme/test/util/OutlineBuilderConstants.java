@@ -20,6 +20,7 @@ public final class OutlineBuilderConstants {
     public static final String EXAMPLE_1 = "EXAMPLE_1";
     public static final String EXAMPLE_2 = "EXAMPLE_2";
     public static final String EXAMPLE_3 = "EXAMPLE_3";
+    public static final Point INVALID_POINT = new Point(Double.MAX_VALUE, Double.MAX_VALUE);
 
     public static final Set<Line> EXAMPLE_1_SET = Stream.of(
             new Line(new Point(100, 50), new Point(350, 450)),

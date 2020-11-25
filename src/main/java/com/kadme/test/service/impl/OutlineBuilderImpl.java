@@ -233,7 +233,6 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             lineSet.addAll(entry.getValue());
             group.add(lineSet);
         });
-
         System.out.println("\nGroup after categorizing" + group);
 
         return group;
@@ -242,7 +241,6 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     private void sanitizeGroupMap(Map<Line, HashSet<Line>> groupMap) {
         groupMap.entrySet().removeIf(entry ->
                 (entry.getValue().isEmpty()));
-
         System.out.println("\nGroupMap after sanitizing" + groupMap);
     }
 

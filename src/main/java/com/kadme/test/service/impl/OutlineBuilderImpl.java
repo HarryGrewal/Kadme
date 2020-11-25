@@ -88,7 +88,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                     .add(line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2()));
 
             logger.info("\npointsWithinGroup List filled with nonIntersectingGroup.forEach.setOfLine.line  size is " + pointsWithinGroup.size());
-            logger.info("\npointsWithinGroup List before sorting is " + pointsWithinGroup);
+            logger.info("\npointsWithinGroup List before sorting is \n" + pointsWithinGroup);
 
             Point center = findCenter(pointsWithinGroup);
             pointsWithinGroup.sort(Collections.reverseOrder(new ByAngleComparator().compareByAngle(center)));
@@ -96,7 +96,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             Point firstPoint = pointsWithinGroup.get(0);
             Point lastPoint = pointsWithinGroup.get(pointsWithinGroup.size() - 1);
 
-            logger.info("\npointsWithinGroup List after sorting is " + pointsWithinGroup);
+            logger.info("\npointsWithinGroup List after sorting is \n" + pointsWithinGroup);
             logger.info("\nFirst Point is " + firstPoint);
             logger.info("\nLast Point is " + lastPoint);
 
@@ -154,7 +154,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         }
         final Point point = new Point(centroidX / pointsWithinGroup.size(), centroidY / pointsWithinGroup.size());
 
-        logger.info("\nPointsWithinGroup in findCenter " + pointsWithinGroup);
+        logger.info("\nPointsWithinGroup in findCenter \n" + pointsWithinGroup);
         logger.info("\nCenter is " + point);
 
         return point;
@@ -189,11 +189,11 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                 if (findIntersectingPoint.ifIntersect(baseLine, line)) {
                     intersectingLineSet.add(line);
 
-                    logger.info("\nLine added to IntersectingLineSet " + line + " \nbase line is : " + baseLine);
+                    logger.info("\nLine added to IntersectingLineSet \n" + line + " \nbase line is : " + baseLine);
                 } else {
                     nonIntersectingLineSet.add(line);
 
-                    logger.info("\nLine added to NonIntersectingLineSet " + line + " \nbase line is : " + baseLine);
+                    logger.info("\nLine added to NonIntersectingLineSet \n" + line + " \nbase line is : " + baseLine);
                 }
             }
         });
@@ -201,12 +201,12 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         nonIntersectingLinesMap.put(baseLine, nonIntersectingLineSet);
 
         logger.info("\nNonIntersectingLinesMap size is " + nonIntersectingLinesMap.size());
-        logger.info("\nNonIntersectingLinesMap " + nonIntersectingLinesMap);
+        logger.info("\nNonIntersectingLinesMap \n" + nonIntersectingLinesMap);
 
         intersectingLinesMap.put(baseLine, intersectingLineSet);
 
         logger.info("\nIntersectingLinesMap size is " + intersectingLinesMap.size());
-        logger.info("\nIntersectingLinesMap size is " + intersectingLinesMap);
+        logger.info("\nIntersectingLinesMap size is \n" + intersectingLinesMap);
     }
 
 
@@ -234,7 +234,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             lineSet.addAll(entry.getValue());
             group.add(lineSet);
         });
-        logger.info("\nGroup after categorizing" + group);
+        logger.info("\nGroup after categorizing\n" + group);
 
         return group;
     }
@@ -242,7 +242,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     private void sanitizeGroupMap(Map<Line, HashSet<Line>> groupMap) {
         groupMap.entrySet().removeIf(entry ->
                 (entry.getValue().isEmpty()));
-        logger.info("\nGroupMap after sanitizing" + groupMap);
+        logger.info("\nGroupMap after sanitizing\n" + groupMap);
     }
 
 }

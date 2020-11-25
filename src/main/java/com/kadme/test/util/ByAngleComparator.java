@@ -33,7 +33,7 @@ public class ByAngleComparator {
 
             final int compare = Double.compare(angle0, angle1);
 
-            logger.info("\nCompare by angle returns " + compare + " angle0 = " + angle0 + " angle1 = " + angle1);
+            logger.info("\nCompare by angle returns " + compare + " angle0 = " + angle0 + " angle1 = " + angle1 + "\n");
             return compare;
         };
     }

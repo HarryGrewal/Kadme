@@ -23,6 +23,10 @@ This gives us the value of x. Similarly, we can find the value of y. (x, y) give
 
 public class FindIntersectingPoint {
 
+    public boolean ifIntersect(Line l1, Line l2) {
+        return !findIntersectionPoint(l1, l2).equals(INVALID_POINT);
+    }
+
     public Point findIntersectionPoint(Line l1, Line l2) {
 
         // Line l1 represented as a1x + b1y = c1

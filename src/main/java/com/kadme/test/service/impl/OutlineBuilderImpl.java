@@ -123,7 +123,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
 
             logger.info("\nFirst Line " + i + " position " + firstLine.get(i) + " line");
             logger.info("\nSecond Line " + i + " position " + secondLine.get(i) + " line");
-            logger.info("\nIntersectionPoint returns" + findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
+            logger.info("\nIntersectionPoint returns " + findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
 
             if (!intersectionPoint.equals(INVALID_POINT))
                 intersectionPoints.add(intersectionPoint);

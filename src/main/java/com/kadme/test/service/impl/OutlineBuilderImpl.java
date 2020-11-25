@@ -8,6 +8,7 @@ import com.kadme.test.util.ByAngleComparator;
 import com.kadme.test.util.CheckIfIntersect;
 import com.kadme.test.util.DrawComponent;
 import com.kadme.test.util.FindIntersectingPoint;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -15,14 +16,14 @@ import static com.kadme.test.util.OutlineBuilderConstants.INVALID_POINT;
 
 
 public class OutlineBuilderImpl implements OutlineBuilder {
-
+    private final static Logger logger = Logger.getLogger(OutlineBuilderImpl.class);
     private final CheckIfIntersect checkIfIntersect = new CheckIfIntersect();
     private final FindIntersectingPoint findIntersectingPoint = new FindIntersectingPoint();
 
     @Override
     public Polygon buildOutline(Set<Line> inputLines) {
 
-        System.out.println("Set<Line>  size is " + inputLines.size() + "\n");
+        logger.info("Set<Line>  size is " + inputLines.size() + "\n");
 
         Map<Line, HashSet<Line>> nonIntersectingLinesMap = new HashMap<>();
         Map<Line, HashSet<Line>> intersectingLinesMap = new HashMap<>();
@@ -39,8 +40,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         Set<HashSet<Line>> nonIntersectingGroup = groupCategorizedLines(nonIntersectingLinesMap.entrySet());
         Set<HashSet<Line>> intersectingGroup = groupCategorizedLines(intersectingLinesMap.entrySet());
 
-        System.out.println("\n NonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
-        System.out.println("\n IntersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
+        logger.info("\n NonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
+        logger.info("\n IntersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
 
         //Figure out from this group of non intersecting lines, group boundaries and
         // calculate their intersection point and figure out the order of the lines within the group.
@@ -86,8 +87,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             setOfLine.forEach(line -> pointsWithinGroup
                     .add(line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2()));
 
-            System.out.println("\npointsWithinGroup List filled with nonIntersectingGroup.forEach.setOfLine.line  size is " + pointsWithinGroup.size());
-            System.out.println("\npointsWithinGroup List before sorting is " + pointsWithinGroup);
+            logger.info("\npointsWithinGroup List filled with nonIntersectingGroup.forEach.setOfLine.line  size is " + pointsWithinGroup.size());
+            logger.info("\npointsWithinGroup List before sorting is " + pointsWithinGroup);
 
             Point center = findCenter(pointsWithinGroup);
             pointsWithinGroup.sort(Collections.reverseOrder(new ByAngleComparator().compareByAngle(center)));
@@ -95,39 +96,39 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             Point firstPoint = pointsWithinGroup.get(0);
             Point lastPoint = pointsWithinGroup.get(pointsWithinGroup.size() - 1);
 
-            System.out.println("\npointsWithinGroup List after sorting is " + pointsWithinGroup);
-            System.out.println("\nFirst Point is " + firstPoint);
-            System.out.println("\nLast Point is " + lastPoint);
+            logger.info("\npointsWithinGroup List after sorting is " + pointsWithinGroup);
+            logger.info("\nFirst Point is " + firstPoint);
+            logger.info("\nLast Point is " + lastPoint);
 
             setOfLine.forEach(line -> {
                 Point pointX = line.getP1().getX() < line.getP2().getX() ? line.getP1() : line.getP2();
 
-                System.out.println("\nFor PointX  " + " line.getP1().getX(): " + line.getP1().getX() + " < "
+                logger.info("\nFor PointX  " + " line.getP1().getX(): " + line.getP1().getX() + " < "
                         + " line.getP2().getX() " + " ? " + "line.getP1() : " + line.getP1() + "line.getP2() " + line.getP2());
 
                 if (pointX.equals(firstPoint))
                     firstLine.add(line);
 
-                System.out.println("\nPointX " + pointX + " is equal to first point " + firstPoint + "and added to first line " + firstLine);
+                logger.info("\nPointX " + pointX + " is equal to first point " + firstPoint + "and added to first line " + firstLine);
 
                 if (pointX.equals(lastPoint))
                     secondLine.add(line);
 
-                System.out.println("\nPointX " + pointX + " is equal to first point " + firstPoint + "and added to first line " + firstLine);
+                logger.info("\nPointX " + pointX + " is equal to first point " + firstPoint + "and added to first line " + firstLine);
             });
         });
 
         for (int i = 0; i < firstLine.size(); i++) {
             Point intersectionPoint = findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i));
 
-            System.out.println("\nFirst Line " + i + " position " + firstLine.get(i) + " line");
-            System.out.println("\nSecond Line " + i + " position " + secondLine.get(i) + " line");
-            System.out.println("\nIntersectionPoint returns" + findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
+            logger.info("\nFirst Line " + i + " position " + firstLine.get(i) + " line");
+            logger.info("\nSecond Line " + i + " position " + secondLine.get(i) + " line");
+            logger.info("\nIntersectionPoint returns" + findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
 
             if (!intersectionPoint.equals(INVALID_POINT))
                 intersectionPoints.add(intersectionPoint);
 
-            System.out.println("\n IntersectionPoints list size is " + intersectionPoints.size() + "\n" + intersectionPoints);
+            logger.info("\n IntersectionPoints list size is " + intersectionPoints.size() + "\n" + intersectionPoints);
         }
 
         List<Point> polygonPoints = new ArrayList<>(intersectionPoints);
@@ -137,7 +138,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             polygonPoints.add(line.getP2());
         });
 
-        System.out.println("\n Final Polygon Points size is  " + polygonPoints.size() + "\n" + polygonPoints);
+        logger.info("\n Final Polygon Points size is  " + polygonPoints.size() + "\n" + polygonPoints);
 
         //Draw Component
         new DrawComponent(inputLines, polygonPoints).draw();
@@ -153,8 +154,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         }
         final Point point = new Point(centroidX / pointsWithinGroup.size(), centroidY / pointsWithinGroup.size());
 
-        System.out.println("\nPointsWithinGroup in findCenter " + pointsWithinGroup);
-        System.out.println("\nCenter is " + point);
+        logger.info("\nPointsWithinGroup in findCenter " + pointsWithinGroup);
+        logger.info("\nCenter is " + point);
 
         return point;
     }
@@ -188,24 +189,24 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                 if (findIntersectingPoint.ifIntersect(baseLine, line)) {
                     intersectingLineSet.add(line);
 
-                    System.out.println("\nLine added to IntersectingLineSet " + line + " \nbase line is : " + baseLine);
+                    logger.info("\nLine added to IntersectingLineSet " + line + " \nbase line is : " + baseLine);
                 } else {
                     nonIntersectingLineSet.add(line);
 
-                    System.out.println("\nLine added to NonIntersectingLineSet " + line + " \nbase line is : " + baseLine);
+                    logger.info("\nLine added to NonIntersectingLineSet " + line + " \nbase line is : " + baseLine);
                 }
             }
         });
 
         nonIntersectingLinesMap.put(baseLine, nonIntersectingLineSet);
 
-        System.out.println("\nNonIntersectingLinesMap size is " + nonIntersectingLinesMap.size());
-        System.out.println("\nNonIntersectingLinesMap " + nonIntersectingLinesMap);
+        logger.info("\nNonIntersectingLinesMap size is " + nonIntersectingLinesMap.size());
+        logger.info("\nNonIntersectingLinesMap " + nonIntersectingLinesMap);
 
         intersectingLinesMap.put(baseLine, intersectingLineSet);
 
-        System.out.println("\nIntersectingLinesMap size is " + intersectingLinesMap.size());
-        System.out.println("\nIntersectingLinesMap size is " + intersectingLinesMap);
+        logger.info("\nIntersectingLinesMap size is " + intersectingLinesMap.size());
+        logger.info("\nIntersectingLinesMap size is " + intersectingLinesMap);
     }
 
 
@@ -233,7 +234,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             lineSet.addAll(entry.getValue());
             group.add(lineSet);
         });
-        System.out.println("\nGroup after categorizing" + group);
+        logger.info("\nGroup after categorizing" + group);
 
         return group;
     }
@@ -241,7 +242,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     private void sanitizeGroupMap(Map<Line, HashSet<Line>> groupMap) {
         groupMap.entrySet().removeIf(entry ->
                 (entry.getValue().isEmpty()));
-        System.out.println("\nGroupMap after sanitizing" + groupMap);
+        logger.info("\nGroupMap after sanitizing" + groupMap);
     }
 
 }

@@ -1,10 +1,12 @@
 package com.kadme.test.util;
 
 import com.kadme.test.model.Point;
+import org.apache.log4j.Logger;
 
 import java.util.Comparator;
 
 public class ByAngleComparator {
+    private final static Logger logger = Logger.getLogger(ByAngleComparator.class);
 
     private static double angleTheta(
             double x0, double y0, double x1, double y1) {
@@ -12,7 +14,7 @@ public class ByAngleComparator {
         double dy = y1 - y0;
         final double v = Math.atan2(dy, dx);
 
-        System.out.println("\nangelTheta from comparator returns " + v);
+        logger.info("\nangelTheta from comparator returns " + v);
         return v;
 
 
@@ -31,7 +33,7 @@ public class ByAngleComparator {
 
             final int compare = Double.compare(angle0, angle1);
 
-            System.out.println("\nCompare by angle returns " + compare + " angle0 = " + angle0 + " angle1 = " + angle1);
+            logger.info("\nCompare by angle returns " + compare + " angle0 = " + angle0 + " angle1 = " + angle1);
             return compare;
         };
     }

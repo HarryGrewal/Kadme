@@ -33,7 +33,8 @@ class GenerateRandomLinesTest {
     @Test
     void randomCoordinate() {
         double coordinate = GenerateRandomLines.GenerateRandomPoints.GenerateRandomCoordinate.randomCoordinate(0, 10);
-        Assertions.assertTrue(0 <= coordinate && coordinate <= 10, "coordinate not in set range");
+        System.out.println("Random coordinate generated in test is " + coordinate);
+        Assertions.assertTrue(0 <= coordinate && coordinate <= 11, "coordinate not in set range");
     }
 
 

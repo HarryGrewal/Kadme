@@ -43,38 +43,13 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         logger.info("\n NonIntersectingGroup size is " + nonIntersectingGroup.size() + "\n" + nonIntersectingGroup);
         logger.info("\n IntersectingGroup size is " + intersectingGroup.size() + "\n" + intersectingGroup);
 
-        //Figure out from this group of non intersecting lines, group boundaries and
-        // calculate their intersection point and figure out the order of the lines within the group.
-        //Once we get the intersection point simply travel via first group to intersection point and
-        // then to other points in the group and then to intersection point and to third group and so on
-        //By travel I meant include points in Polygon class
-        //Verify all the points are included in polygon
-
-        // Logic below did'nt work out as thought it would!
-    /*
-                 //Ready for Red-Black action!
-        nonIntersectingGroup.forEach(this::sortLines);
-        Set<Point> finalListOfPoints = new LinkedHashSet<>();
-        List<Line> intersectionLine = new ArrayList<>();
-        nonIntersectingGroup.forEach(setOfLine -> {
-                    Stream<Line> sorted = new TreeSet<>(setOfLine).stream()
-                            .sorted(Collections.reverseOrder(new ByAngleComparator().byAngleComparator(centroid(setOfLine))));
-
-                    intersectionLine.add(sorted.parallel().findFirst().isPresent() ?
-                            sorted.parallel().findFirst().get() : null);
-                    intersectionLine.add(sorted.parallel().skip(setOfLine.size() - 1).findFirst().isPresent() ?
-                            sorted.parallel().skip(setOfLine.size() - 1).findFirst().get() : null);
-                }
-        );
-
-        nonIntersectingGroup.forEach(setOfLine -> {
-                    setOfLine.forEach(line -> finalListOfPoints.add(line.getP1()));
-                    int i = 0;
-                    finalListOfPoints.add(findIntersectingPoint
-                            .findIntersectionPoint(intersectionLine.get(++i),
-                                    intersectionLine.get(++i)));
-                }
-        );*/
+        //Line of thoughts
+        /*From the nonIntersectingGroup -> take head of every line -> find center -> sort clockwise
+         nonIntersectingGroup -> take tail of every line -> find center -> sort anticlockwise
+        Fill polygon -> connect sorted heads of nonIntersectingGroup until last head
+         Find intersection (I) of last line of first group with first line of second group
+         connect last head of first group with intersection point (I) -> connect (I) with head of second group
+         Do like wise with tail*/
 
 
         List<Line> firstLine = new ArrayList<>();
@@ -248,4 +223,30 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         logger.info("\nGroupMap after sanitizing size" + groupMap.size() + "\n" + groupMap);
     }
 
+
+    // Logic below did'nt work out as thought it would!
+    /*
+                 //Ready for Red-Black action!
+        nonIntersectingGroup.forEach(this::sortLines);
+        Set<Point> finalListOfPoints = new LinkedHashSet<>();
+        List<Line> intersectionLine = new ArrayList<>();
+        nonIntersectingGroup.forEach(setOfLine -> {
+                    Stream<Line> sorted = new TreeSet<>(setOfLine).stream()
+                            .sorted(Collections.reverseOrder(new ByAngleComparator().byAngleComparator(centroid(setOfLine))));
+
+                    intersectionLine.add(sorted.parallel().findFirst().isPresent() ?
+                            sorted.parallel().findFirst().get() : null);
+                    intersectionLine.add(sorted.parallel().skip(setOfLine.size() - 1).findFirst().isPresent() ?
+                            sorted.parallel().skip(setOfLine.size() - 1).findFirst().get() : null);
+                }
+        );
+
+        nonIntersectingGroup.forEach(setOfLine -> {
+                    setOfLine.forEach(line -> finalListOfPoints.add(line.getP1()));
+                    int i = 0;
+                    finalListOfPoints.add(findIntersectingPoint
+                            .findIntersectionPoint(intersectionLine.get(++i),
+                                    intersectionLine.get(++i)));
+                }
+        );*/
 }

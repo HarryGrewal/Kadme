@@ -22,14 +22,22 @@ class FindIntersectingPointTest {
 
     @Test
     void findIntersectionPoint() {
-
+        Point p1, p2, q1, q2;
         FindIntersectingPoint findIntersection = new FindIntersectingPoint();
 
-        Point p1 = findIntersection.findIntersectionPoint(new Line(A, B), new Line(C, D));
-        Point p2 = findIntersection.findIntersectionPoint(new Line(E, F), new Line(G, H));
+        p1 = findIntersection.findIntersectionPoint(new Line(A, B), new Line(C, D));
+        p2 = findIntersection.findIntersectionPoint(new Line(E, F), new Line(G, H));
 
         Assertions.assertEquals(new Point(2.4, 2.4), p1);
         Assertions.assertEquals(INVALID_POINT, p2);
+
+        p1 = new Point(195.0, 50.0);
+        q1 = new Point(195.0, 450.0);
+        p2 = new Point(190.0, 50.0);
+        q2 = new Point(195.0, 450);
+
+        Assertions.assertTrue(findIntersection.ifIntersect(new Line(p1, q1), new Line(p2, q2)));
+
 
     }
 }

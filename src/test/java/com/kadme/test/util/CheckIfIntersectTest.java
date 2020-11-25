@@ -24,11 +24,19 @@ class CheckIfIntersectTest {
 
         Assertions.assertTrue(checkIfIntersect.doIntersect(p1, q1, p2, q2));
 
+        p1 = new Point(195.0, 50.0);
+        q1 = new Point(195.0, 450.0);
+        p2 = new Point(190.0, 50.0);
+        q2 = new Point(195.0, 450);
+
+        Assertions.assertTrue(checkIfIntersect.doIntersect(p1, q1, p2, q2));
+
         p1 = new Point(-5, -5);
         q1 = new Point(0, 0);
         p2 = new Point(1, 1);
         q2 = new Point(10, 10);
 
         Assertions.assertFalse(checkIfIntersect.doIntersect(p1, q1, p2, q2));
+
     }
 }

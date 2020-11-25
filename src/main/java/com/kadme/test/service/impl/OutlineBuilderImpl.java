@@ -125,8 +125,10 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             logger.debug("\nSecond Line " + i + " position " + secondLine.get(i) + " line");
             logger.debug("\nIntersectionPoint returns " + findIntersectingPoint.findIntersectionPoint(firstLine.get(i), secondLine.get(i)));
 
-            if (!intersectionPoint.equals(INVALID_POINT))
-                intersectionPoints.add(intersectionPoint);
+            if (!intersectionPoint.equals(INVALID_POINT)) {
+                if (!intersectionPoints.contains(intersectionPoint))
+                    intersectionPoints.add(intersectionPoint);
+            }
 
             logger.info("\n IntersectionPoints list size is " + intersectionPoints.size() + "\n" + intersectionPoints);
         }

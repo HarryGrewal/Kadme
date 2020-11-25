@@ -3,6 +3,8 @@ package com.kadme.test.util;
 import com.kadme.test.model.Line;
 import com.kadme.test.model.Point;
 
+import static com.kadme.test.util.OutlineBuilderConstants.INVALID_POINT;
+
 /*
 * Given two points (x1, y1) and (x2, y2).
 The equation of line formed by these points.
@@ -38,7 +40,7 @@ public class FindIntersectingPoint {
         if (determinant == 0) {
             // The lines are parallel. This is simplified
             // by returning a pair of FLT_MAX
-            return new Point(Double.MAX_VALUE, Double.MAX_VALUE);
+            return INVALID_POINT;
         } else {
             double x = (b2 * c1 - b1 * c2) / determinant;
             double y = (a1 * c2 - a2 * c1) / determinant;

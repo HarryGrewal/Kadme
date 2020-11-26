@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 
 import java.util.*;
 
+import static com.kadme.test.util.OutlineBuilderConstants.INVALID_POINT;
+
 
 public class OutlineBuilderImpl implements OutlineBuilder {
     private final static Logger logger = Logger.getLogger(OutlineBuilderImpl.class);
@@ -61,6 +63,8 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             makeComplexPolygon(headArray, tailArray);
         }
 
+        logger.info("\n Head Points size is  " + headArray.size() + "\n" + headArray);
+        logger.info("\n Tail Points size is  " + tailArray.size() + "\n" + tailArray);
         logger.info("\n Final Polygon Points size is  " + polygonPoints.size() + "\n" + polygonPoints);
         //Draw Component
         new DrawComponent(inputLines, polygonPoints).draw();
@@ -251,18 +255,49 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     }
 
     private void makeComplexPolygon(List<List<Point>> headArray, List<List<Point>> tailArray) {
+        Point intersection, lastX, lastY, nextFirstX, nextFirstY;
+        Line l1, l2;
+        for (int i = 0; i < headArray.size() && i < tailArray.size(); i++) {
+            final List<Point> firstGroup = headArray.get(i);
+            for (int j = firstGroup.size(); j-- > 0; ) {
+                polygonPoints.add(firstGroup.get(j));
+            }
+            lastX = firstGroup.get(0);
+            lastY = tailArray.get(i).get(0);
+            l1 = new Line(lastX, lastY);
+            if (i + 1 < tailArray.size() && i + 1 < headArray.size()) {
+                nextFirstX = headArray.get(i + 1).get(headArray.get(i + 1).size() - 1);
+                nextFirstY = tailArray.get(i + 1).get(tailArray.get(i + 1).size() - 1);
+                l2 = new Line(nextFirstX, nextFirstY);
 
-        for (int i = 0; i < headArray.size(); i++) {
-            final List<Point> points = headArray.get(i);
-            System.out.println("Harry Head" + points);
-
+                intersection = findIntersectingPoint.findIntersectionPoint(l1, l2);
+                logger.info("\nIntersection in make complex polygon returns " + intersection);
+                logger.info("\nIntersection done between lines  " + l1 + "\t" + l2);
+                if (!intersection.equals(INVALID_POINT)) {
+                    polygonPoints.add(intersection);
+                }
+            }
         }
 
-        for (int i = 0; i < tailArray.size(); i++) {
-            final List<Point> points = tailArray.get(i);
-            System.out.println("Harry Tail" + points);
-
+        for (int i = 0; i < headArray.size() && i < tailArray.size(); i++) {
+            final List<Point> firstGroup = tailArray.get(i);
+            for (Point point : firstGroup) {
+                polygonPoints.add(point);
+            }
+            lastX = firstGroup.get(firstGroup.size() - 1);
+            lastY = headArray.get(i).get(headArray.get(i).size() - 1);
+            l1 = new Line(lastX, lastY);
+            if (i + 1 < tailArray.size() && i + 1 < headArray.size()) {
+                nextFirstX = tailArray.get(i + 1).get(0);
+                nextFirstY = headArray.get(i + 1).get(0);
+                l2 = new Line(nextFirstX, nextFirstY);
+                intersection = findIntersectingPoint.findIntersectionPoint(l1, l2);
+                if (!intersection.equals(INVALID_POINT)) {
+                    polygonPoints.add(intersection);
+                }
+            }
         }
-
+        //full traversal
+        polygonPoints.add(headArray.get(0).get(headArray.get(0).size() - 1));
     }
 }

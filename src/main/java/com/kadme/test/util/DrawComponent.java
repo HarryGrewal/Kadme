@@ -47,16 +47,13 @@ public class DrawComponent extends JComponent {
                 g2d.setStroke(new BasicStroke(4.0f, BasicStroke.CAP_SQUARE,
                         BasicStroke.JOIN_MITER, 10.0f, dashingPattern, 0.0f));*/
                 g2d.setColor(Color.RED);
-
-                for (int i = 0; i < points.size() - 1; i++) {
+                //Draw my Polygon :)
+                for (int i = 0, j = 1; i < points.size() && j < points.size(); i++, j++) {
                     Point p1 = points.get(i);
-                    Point p2 = points.get(++i);
+                    Point p2 = points.get(j);
                     g2d.draw(new Line2D.Double(p1.getX(), p1.getY(),
                             p2.getX(), p2.getY()));
                 }
-              /*  g2d.draw(new Line2D.Double(points.get(points.size() - 1).getX(),
-                        points.get(points.size() - 1).getY(),
-                        points.get(0).getX(), points.get(0).getY()));*/
             }
         }
 

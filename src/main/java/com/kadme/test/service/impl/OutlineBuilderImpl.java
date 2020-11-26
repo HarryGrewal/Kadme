@@ -5,7 +5,6 @@ import com.kadme.test.model.Point;
 import com.kadme.test.model.Polygon;
 import com.kadme.test.service.OutlineBuilder;
 import com.kadme.test.util.ByAngleComparator;
-import com.kadme.test.util.CheckIfIntersect;
 import com.kadme.test.util.DrawComponent;
 import com.kadme.test.util.FindIntersectingPoint;
 import org.apache.log4j.Logger;
@@ -15,7 +14,6 @@ import java.util.*;
 
 public class OutlineBuilderImpl implements OutlineBuilder {
     private final static Logger logger = Logger.getLogger(OutlineBuilderImpl.class);
-    private final CheckIfIntersect checkIfIntersect = new CheckIfIntersect();
     private final FindIntersectingPoint findIntersectingPoint = new FindIntersectingPoint();
     private List<Point> polygonPoints = new ArrayList<>();
     private List<List<Point>> headArray = new ArrayList<>();
@@ -53,33 +51,15 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                  Find intersection (I) of last line of first group with first line of second group
                   connect last head of first group with intersection point (I) -> connect (I) with head of second group
          */
-        nonIntersectingGroup.forEach(setOfLinesInOneGroup -> {
-            // step 1 populate head tail array from first group
-            makeSortedHeadTailList(setOfLinesInOneGroup);
-            if (nonIntersectingGroup.size() == 1) {
-                //simple logic to traverse boundary
-                /*polygonPoints.add(headArrayList.get(headArrayList.size() - 1));
-                polygonPoints.add(headArrayList.get(0));
-                polygonPoints.add(headArrayList.get(0));
-                polygonPoints.add(tailArrayList.get(0));
-                polygonPoints.add(tailArrayList.get(0));
-                polygonPoints.add(tailArrayList.get(tailArrayList.size() - 1));
-                polygonPoints.add(tailArrayList.get(tailArrayList.size() - 1));
-                polygonPoints.add(headArrayList.get(headArrayList.size() - 1));*/
-                final List<Point> points = headArray.get(0);
-                for (int i = points.size(); i-- > 0; ) {
-                    polygonPoints.add(points.get(i));
-                }
-                for (Point point : tailArray.get(0)) {
-                    polygonPoints.add(point);
-                }
-                //full traversal
-                polygonPoints.add(points.get(points.size() - 1));
-                return;
-            }
-        });
+
+        // step 1 populate head tail array from first group
+        nonIntersectingGroup.forEach(this::makeSortedHeadTailList);
         //step 2
-        makePolygon(headArray, tailArray);
+        if (nonIntersectingGroup.size() == 1) {
+            makeSimplePolygon(headArray, tailArray);
+        } else {
+            makeComplexPolygon(headArray, tailArray);
+        }
 
         logger.info("\n Final Polygon Points size is  " + polygonPoints.size() + "\n" + polygonPoints);
         //Draw Component
@@ -127,13 +107,13 @@ public class OutlineBuilderImpl implements OutlineBuilder {
 
         nonIntersectingLinesMap.put(baseLine, nonIntersectingLineSet);
 
-        logger.info("\nNonIntersectingLinesMap size is " + nonIntersectingLinesMap.size());
-        logger.info("\nNonIntersectingLinesMap" + "\n" + nonIntersectingLinesMap);
+        logger.debug("\nNonIntersectingLinesMap size is " + nonIntersectingLinesMap.size());
+        logger.debug("\nNonIntersectingLinesMap" + "\n" + nonIntersectingLinesMap);
 
         intersectingLinesMap.put(baseLine, intersectingLineSet);
 
-        logger.info("\nIntersectingLinesMap size is " + intersectingLinesMap.size());
-        logger.info("\nIntersectingLinesMap" + "\n" + intersectingLinesMap);
+        logger.debug("\nIntersectingLinesMap size is " + intersectingLinesMap.size());
+        logger.debug("\nIntersectingLinesMap" + "\n" + intersectingLinesMap);
     }
 
 
@@ -153,7 +133,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
          * at list location 3 for l4 -> {l1, l2, l4, l6, l7, l8, l9}
          * ...
          * */
-        logger.info("\ngroupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) input size " + entries.size() + "\n" + entries);
+        logger.debug("\ngroupCategorizedLines(Set<Map.Entry<Line, HashSet<Line>>> entries) input size " + entries.size() + "\n" + entries);
         Set<HashSet<Line>> group = new HashSet<>();
         entries.forEach(entry -> {
             HashSet<Line> lineSet = new HashSet<>();
@@ -161,16 +141,16 @@ public class OutlineBuilderImpl implements OutlineBuilder {
             lineSet.addAll(entry.getValue());
             group.add(lineSet);
         });
-        logger.info("\nGroup after categorizing size " + group.size() + "\n" + group);
+        logger.debug("\nGroup after categorizing size " + group.size() + "\n" + group);
 
         return group;
     }
 
     private void sanitizeGroupMap(Map<Line, HashSet<Line>> groupMap) {
-        logger.info("\nGroupMap before sanitizing size" + groupMap.size() + "\n" + groupMap);
+        logger.debug("\nGroupMap before sanitizing size" + groupMap.size() + "\n" + groupMap);
         groupMap.entrySet().removeIf(entry ->
                 (entry.getValue().isEmpty()));
-        logger.info("\nGroupMap after sanitizing size" + groupMap.size() + "\n" + groupMap);
+        logger.debug("\nGroupMap after sanitizing size" + groupMap.size() + "\n" + groupMap);
     }
 
     private Point findCenter(List<Point> relativePointsWithinGroup) {
@@ -186,14 +166,10 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     private List<Point> getHeadOrTailArrayList(List<List<Point>> headTailWithinGroup, String relativeTo) {
         List<Point> relativePointsWithinGroup = new ArrayList<>();
         if (relativeTo.equals("HEAD")) {
-            headTailWithinGroup.forEach(headTailList -> {
-                relativePointsWithinGroup.add(headTailList.get(0));
-            });
+            headTailWithinGroup.forEach(headTailList -> relativePointsWithinGroup.add(headTailList.get(0)));
         }
         if (relativeTo.equals("TAIL")) {
-            headTailWithinGroup.forEach(headTailList -> {
-                relativePointsWithinGroup.add(headTailList.get(1));
-            });
+            headTailWithinGroup.forEach(headTailList -> relativePointsWithinGroup.add(headTailList.get(1)));
         }
         return relativePointsWithinGroup;
     }
@@ -228,13 +204,13 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         List<Point> headArrayList = new ArrayList<>(getHeadOrTailArrayList(headTailWithinGroup, "HEAD"));
         List<Point> tailArrayList = new ArrayList<>(getHeadOrTailArrayList(headTailWithinGroup, "TAIL"));
 
-        logger.info("\nHeadArrayList before sorting size is " + "\n" + headArrayList);
-        logger.info("\nTailArrayList before sorting size is " + "\n" + tailArrayList);
+        logger.debug("\nHeadArrayList before sorting size is " + "\n" + headArrayList);
+        logger.debug("\nTailArrayList before sorting size is " + "\n" + tailArrayList);
 
         Point headCenter = findCenter(headArrayList);
         Point tailCenter = findCenter(tailArrayList);
-        logger.info("\nHead Center is " + headCenter);
-        logger.info("\nTail Center is " + tailCenter);
+        logger.debug("\nHead Center is " + headCenter);
+        logger.debug("\nTail Center is " + tailCenter);
 
         headArrayList.sort(new ByAngleComparator().compareByAngle(headCenter));
         tailArrayList.sort(new ByAngleComparator().compareByAngle(tailCenter));
@@ -243,18 +219,50 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         headArray.add(headArrayList);
         tailArray.add(tailArrayList);
 
-        logger.info("\nHeadArrayList after sorting is " + "\n" + headArrayList);
-        logger.info("\nTailArrayList after sorting is " + "\n" + tailArrayList);
-        logger.info("\nFirst Head Point is " + headArrayList.get(0));
-        logger.info("\nLast  Head Point is " + headArrayList.get(headArrayList.size() - 1));
-        logger.info("\nFirst Tail Point is " + tailArrayList.get(0));
-        logger.info("\nLast  Tail Point is " + tailArrayList.get(tailArrayList.size() - 1));
-        logger.info("\nMain Head Array size is " + headArray.size() + "\n" + headArray);
-        logger.info("\nMain Tail Array size is " + tailArray.size() + "\n" + tailArray);
+        logger.debug("\nHeadArrayList after sorting is " + "\n" + headArrayList);
+        logger.debug("\nTailArrayList after sorting is " + "\n" + tailArrayList);
+        logger.debug("\nFirst Head Point is " + headArrayList.get(0));
+        logger.debug("\nLast  Head Point is " + headArrayList.get(headArrayList.size() - 1));
+        logger.debug("\nFirst Tail Point is " + tailArrayList.get(0));
+        logger.debug("\nLast  Tail Point is " + tailArrayList.get(tailArrayList.size() - 1));
+        logger.debug("\nMain Head Array size is " + headArray.size() + "\n" + headArray);
+        logger.debug("\nMain Tail Array size is " + tailArray.size() + "\n" + tailArray);
     }
 
-    private void makePolygon(List<List<Point>> headArray, List<List<Point>> tailArray) {
+    private void makeSimplePolygon(List<List<Point>> headArray, List<List<Point>> tailArray) {
+        //simple logic to traverse boundary
+                /*polygonPoints.add(headArrayList.get(headArrayList.size() - 1));
+                polygonPoints.add(headArrayList.get(0));
+                polygonPoints.add(headArrayList.get(0));
+                polygonPoints.add(tailArrayList.get(0));
+                polygonPoints.add(tailArrayList.get(0));
+                polygonPoints.add(tailArrayList.get(tailArrayList.size() - 1));
+                polygonPoints.add(tailArrayList.get(tailArrayList.size() - 1));
+                polygonPoints.add(headArrayList.get(headArrayList.size() - 1));*/
+        final List<Point> points = headArray.get(0);
+        for (int i = points.size(); i-- > 0; ) {
+            polygonPoints.add(points.get(i));
+        }
+        for (Point point : tailArray.get(0)) {
+            polygonPoints.add(point);
+        }
+        //full traversal
+        polygonPoints.add(points.get(points.size() - 1));
+    }
 
+    private void makeComplexPolygon(List<List<Point>> headArray, List<List<Point>> tailArray) {
+
+        for (int i = 0; i < headArray.size(); i++) {
+            final List<Point> points = headArray.get(i);
+            System.out.println("Harry Head" + points);
+
+        }
+
+        for (int i = 0; i < tailArray.size(); i++) {
+            final List<Point> points = tailArray.get(i);
+            System.out.println("Harry Tail" + points);
+
+        }
 
     }
 }

@@ -25,7 +25,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
     @Override
     public Polygon buildOutline(Set<Line> inputLines) {
 
-        logger.info("Set<Line>  size is " + inputLines.size() + "\n");
+        logger.info("Set<Line>  size is " + inputLines.size() + "\n" + inputLines);
 
         Map<Line, HashSet<Line>> nonIntersectingLinesMap = new HashMap<>();
         Map<Line, HashSet<Line>> intersectingLinesMap = new HashMap<>();
@@ -250,8 +250,6 @@ public class OutlineBuilderImpl implements OutlineBuilder {
         for (Point point : tailArray.get(0)) {
             polygonPoints.add(point);
         }
-        //full traversal
-        polygonPoints.add(points.get(points.size() - 1));
     }
 
     private void makeComplexPolygon(List<List<Point>> headArray, List<List<Point>> tailArray) {
@@ -271,7 +269,7 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                 l2 = new Line(nextFirstX, nextFirstY);
 
                 intersection = findIntersectingPoint.findIntersectionPoint(l1, l2);
-                logger.info("\nIntersection in make complex polygon returns " + intersection);
+                logger.info("\nIntersection in make complex polygon from Head returns " + intersection);
                 logger.info("\nIntersection done between lines  " + l1 + "\t" + l2);
                 if (!intersection.equals(INVALID_POINT)) {
                     polygonPoints.add(intersection);
@@ -291,13 +289,14 @@ public class OutlineBuilderImpl implements OutlineBuilder {
                 nextFirstX = tailArray.get(i + 1).get(0);
                 nextFirstY = headArray.get(i + 1).get(0);
                 l2 = new Line(nextFirstX, nextFirstY);
+
                 intersection = findIntersectingPoint.findIntersectionPoint(l1, l2);
+                logger.info("\nIntersection in make complex polygon from Tail returns " + intersection);
+                logger.info("\nIntersection done between lines  " + l1 + "\t" + l2);
                 if (!intersection.equals(INVALID_POINT)) {
                     polygonPoints.add(intersection);
                 }
             }
         }
-        //full traversal
-        polygonPoints.add(headArray.get(0).get(headArray.get(0).size() - 1));
     }
 }
